@@ -43,8 +43,8 @@ module tubo() {
         linear_extrude(3*lado,center=true)
           polygon([[e,0], [L-e,0], [L-d-e,h+.01], [d+e,h+.01]]);
         }
-   // movimiento fino
-   #translate([-lado/2,-lado/2-h-10.5,L-d+15])
+   // lengüeta movimiento fino
+   translate([-lado/2,-lado/2-h-10.5,L-d+15])
      cube([5,30,15]);
     }
 }
@@ -163,8 +163,8 @@ for(s=[-1.39,1])
 translate([90,-78/2-5.5,-35])
   rotate([0,0,90])
     color ("cyan", .5) robotbit();
-translate([-6,70,6])
-  rotate([90,90,0])
+translate([6,-85,6])
+  rotate([0,90,90])
     color ("cyan", .5) servo_s90g ();
 //  color ("cyan", .5) robotbit();
 //  color ("green", .5) 
