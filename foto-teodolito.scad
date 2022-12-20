@@ -162,6 +162,40 @@ module eje_aux(){
   }
 }
 
+
+module base_sup(){
+  alto=6;
+  hull(){        
+    for(s=[-1,1]){
+    translate([s*36,33,0])
+      cylinder(h=alto,d=10);
+    translate([s*36,-44,0])
+      cylinder(h=alto,d=10);
+    }
+  }
+  hull() {
+    translate([0,80,0])
+      cylinder(h=alto,d=45);
+    cylinder(h=alto,d=45);
+  }
+  hull(){
+   translate([95,30.5,0])
+     cylinder(h=alto,d=15);
+   translate([0,30.5,0])
+     cylinder(h=alto,d=15);
+  }  
+  hull(){
+   translate([95,-41.5,0])
+     cylinder(h=alto,d=15);
+   translate([0,-41.5,0])
+     cylinder(h=alto,d=15);
+  }  
+}
+
+//color("pink",.5)
+  translate([0,0,-45])
+    base_sup();
+
 //porta_BH1750();
 //translate([-7,-7,5]) BH1750();
 
@@ -192,7 +226,7 @@ translate([0,-48.5,0])
     rotate([0,90,-90])
       color ("cyan", .5) garra_servo();
 //  color ("cyan", .5) robotbit();
-//  color ("green", .5) 
-//    translate([0,80,19])
-//      rotate([0,180,0])
-//        stepper_28BYJ_48();
+  color ("cyan", .5) 
+    translate([0,80,-19.5])
+      rotate([0,180,0])
+        stepper_28BYJ_48();
