@@ -61,15 +61,26 @@ module eje(d_eje,f) {
 
 module pilar() {
   ancho=15;
+  alto2=-40;
+  alto3=10;
   difference(){
     hull(){
       rotate([90,0,0])
         cylinder(h=ancho,d=lado+10,center=true);
-      translate([-25,-ancho/2,-45])
-        cube([50,ancho,10]);
+      translate([-25,-ancho/2,alto2])
+        cube([50,ancho,alto3]);
     }
     rotate([90,0,0])
       cylinder(h=30,d=lado+1,center=true);
+  }
+  // pie
+  largo_pie=75;
+  difference(){
+    translate([-largo_pie/2,-ancho/2,alto2])
+      cube([largo_pie,ancho,alto3]);
+    for(s=[-1,1])
+      translate([(largo_pie+50)/4*s,0,alto2])
+        cylinder(h=3*alto3,d=5,center=true);
   }
 }
 
@@ -111,16 +122,14 @@ module porta_BH1750() {
 }
 
 module eje_aux(){
-  ancho1=30;
+  ancho1=32;
   ancho2=10;
   e=7;
   difference(){
     union(){
-      cylinder(h=ancho1,d=lado);
-      translate([-4.9,0,0]) {
-        translate([-lado/2+5+5,0,0])
-          cube([e,46,ancho2]);          
-      }
+      cylinder(h=ancho1,d=lado);      
+      translate([-4.9-lado/2+5+5,0,0])
+        cube([e,46,ancho2]);                
       // elástico viejo
 //      bez = [ [.1,0],[0,20],[-7.5,30],[-14,20],[-14,-16],[-10,-17],[-10,-10],[-10,10],[-7.5,22],[-5,10],[-4.9,0] ];
 //        translate([1,44,0])
@@ -132,19 +141,31 @@ module eje_aux(){
 //        trace_bezier(bez, N=2);  
       linear_extrude_bezier(bez, N=2, height=ancho2, splinesteps=32, convexity=5);
     }    
+    // hueco
     cylinder(h=ancho1+12,d=12+1,center=true);
+    // tuerca
     translate([-2.5+2.1/2,lado*2.3-8.5,-ancho2])
       cube([2.1,9,ancho2*3]);
+    // tornillo
     translate([-5,lado*2.3-8.5/2,ancho2/2])
       rotate([0,90,0])
         cylinder(d=4,h=12);    
+    // hueco garra servo
+    translate([0,0,ancho1-3])
+      rotate(90)
+        hull(){
+        cylinder(h=6,d=7.7);
+        for(s=[-1,1])
+          translate([14*s,0,0])
+            cylinder(h=6,d=4.7);
+       }
   }
 }
 
 //porta_BH1750();
 //translate([-7,-7,5]) BH1750();
 
-rotate([0,-25,0]) {
+rotate([0,-20,0]) {
 translate([0,0,-20.8]){
 //color("gray") translate([0,0,-8]) porta_ldr();
   color("gray") translate([0,0,-8]) porta_BH1750();
@@ -160,12 +181,16 @@ for(s=[-1.39,1])
   translate([0,s*27.0,0])
     pilar();
 ////color("white") translate([0,0,100]) ldr();
-translate([90,-78/2-5.5,-35])
+translate([100,-78/2-5.5,-40])
   rotate([0,0,90])
     color ("cyan", .5) robotbit();
-translate([6,-85,6])
+translate([6,-80,6])
   rotate([0,90,90])
     color ("cyan", .5) servo_s90g ();
+translate([0,-48.5,0])
+  rotate([0,-20,0])
+    rotate([0,90,-90])
+      color ("cyan", .5) garra_servo();
 //  color ("cyan", .5) robotbit();
 //  color ("green", .5) 
 //    translate([0,80,19])

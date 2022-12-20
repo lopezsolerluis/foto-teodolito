@@ -69,6 +69,17 @@ module servo_s90g () {
     cylinder(h=3.2,d=4.6);
 }
 
+module garra_servo(){
+  hull(){
+    cylinder(h=1.5,d=7);
+    for(s=[-1,1])
+      translate([14*s,0,0])
+        cylinder(h=1.5,d=4);
+  }
+  cylinder(h=4,d=7);
+}
+//garra_servo();
+
 module ldr(){
   cylinder(h=2.4,d=5.1);
   for(s=[-1,1])
@@ -90,4 +101,3 @@ module BH1750 () {
     translate([7-1.8/2,7-1.5,1])
       cube([1.8,3,1]);
 }
-BH1750();
