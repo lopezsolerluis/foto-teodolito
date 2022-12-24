@@ -234,7 +234,7 @@ module base_sup(){
     for(x=[48,95])
       for(y=[30.5,-41.5])
         translate([x,y,0])
-          cylinder(d=tor2,h=3*alto,center=true);
+          cylinder(d=tor2,h=6*alto,center=true);
     // alitas del stepper
     for(x=[35/2,-35/2])      
         translate([x,radio_rueda_1+radio_rueda_2-8,0])
@@ -271,7 +271,7 @@ for(s=[-1.39,1])
   translate([0,s*27.0,0])
     pilar();
 ////color("white") translate([0,0,100]) ldr();
-translate([100,-78/2-5.5,-40])
+translate([100,-78/2-5.5,-39])
   rotate([0,0,90])
     color ("cyan", .5) robotbit();
 translate([6,-80,6])
