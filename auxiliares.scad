@@ -40,12 +40,21 @@ module stepper_28BYJ_48 () {
   // eje
   translate([0,8,19]) {
     cylinder(h=1.5, d=9);
-    cylinder(h=10,d=5);
+    difference() {      
+      cylinder(h=10,d=5);
+      // muescas del eje
+      for (s=[-1,1])
+        translate([s*3,0,7.01])
+          cube([3,8,6],center=true);
+    }
   }
-  // "enchufe"
+  // "tapa enchufe"
   translate([-14.6/2,-17,0])
     cube([14.6, 17, 19]);  
+  
+  
 }
+stepper_28BYJ_48 ();
 
 module servo_s90g () {
   // cuerpo
