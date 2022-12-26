@@ -30,7 +30,7 @@ module base() {
 }
 
 module pie(){
-  largo_pie=60;
+  largo_pie=70;
   difference(){  
     union(){
       cylinder(h=a_eje_acimutal-e_rueda_1+1, 
