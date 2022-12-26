@@ -87,7 +87,7 @@ module eje(d_eje,f) {
       }
 }
 
-module pilar() {
+module pilar(servo) {
   ancho=15;
   alto2=-40;
   alto3=10;
@@ -110,7 +110,47 @@ module pilar() {
       translate([(largo_pie+50)/4*s,0,alto2])
         cylinder(h=3*alto3,d=5,center=true);
   }
+  // soporte servo
+  if (servo) {
+    difference(){
+      for (z=[(lado+10+3.4)/2+1,-26.2-1]){
+        translate([0,(-34-13+ancho)/2,z])
+          cube([5,34+13,10],center=true);
+        translate([0,(-34+ancho)/2,z])
+          cube([10,34,10],center=true);
+      }
+      for (z=[(lado+10+3.4)/2+1,-26.2-1])
+        hull() {
+          translate([0,-31,z])
+            rotate([0,90,0])
+              cylinder(h=30,d=4.5,center=true);
+          translate([0,-34,z])
+            rotate([0,90,0])
+              cylinder(h=30,d=4.5,center=true);
+        }
+    }
+  }
 }
+module abrazadera_servo(tuerca){
+  difference(){
+    cube([8,10,54],center=true);
+    // hueco central
+    translate([-4.5+.2,0,0])
+      cube([8,20,34],center=true);
+    // tornillo
+    for (s=[-1,1])
+      translate([0,0,s*(54/2-5)])
+        rotate([0,90,0])
+          cylinder(h=30,d=4.5,center=true);
+    // tuerca
+    if (tuerca) 
+      for (s=[-1,1])
+        translate([2.5+1,0,s*(54/2-5)])
+          rotate([0,90,0])
+            cylinder(h=3,d=7.1,center=true,$fn=6);    
+  }
+}
+
 
 module porta_ldr () {  
   largo=8;
@@ -266,21 +306,32 @@ color("lightblue") translate([-lado,-lado,lado-6]/2) rotate([0,-90,180]) eje(12,
 color ("green") translate([0,-39,0]/2) rotate([90,0,0]) eje_aux();  
 }
 
-color("grey",.5)
-for(s=[-1.39,1])
-  translate([0,s*27.0,0])
-    pilar();
+color("grey",.5){
+  translate([0,-1.39*27.0,0])
+    pilar(true);
+    translate([0,27.0,0])
+    pilar(false);
+}
+color("blue",.5){
+translate([6.5,-70,-5.3])
+  abrazadera_servo(false);
+translate([-6.5,-70,-5.3])
+  rotate([0,180,0])
+    abrazadera_servo(true);
+}
+
+
 ////color("white") translate([0,0,100]) ldr();
 translate([100,-78/2-5.5,-39])
   rotate([0,0,90])
     color ("cyan", .5) robotbit();
-translate([6,-80,6])
+translate([11.8/2,-80,6])
   rotate([0,90,90])
     color ("cyan", .5) servo_s90g ();
 translate([0,-48.5,0])
   rotate([0,-20,0])
     rotate([0,90,-90])
-      color ("cyan", .5) garra_servo();
+      color ("cyan", .5) garra_servo(lado);
 //  color ("cyan", .5) robotbit();
   color ("cyan", .5) 
     translate([0,radio_rueda_1+radio_rueda_2-8,-20])

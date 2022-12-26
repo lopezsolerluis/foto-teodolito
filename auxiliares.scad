@@ -54,7 +54,7 @@ module stepper_28BYJ_48 () {
   
   
 }
-stepper_28BYJ_48 ();
+//stepper_28BYJ_48 ();
 
 module servo_s90g () {
   // cuerpo
@@ -78,16 +78,19 @@ module servo_s90g () {
     cylinder(h=3.2,d=4.6);
 }
 
-module garra_servo(){
-  hull(){
-    cylinder(h=1.5,d=7);
-    for(s=[-1,1])
-      translate([14*s,0,0])
-        cylinder(h=1.5,d=4);
+module garra_servo(largo=40){
+  intersection(){
+    hull(){
+      cylinder(h=1.5,d=7);
+      for(s=[-1,1])
+        translate([14*s,0,0])
+          cylinder(h=1.5,d=4);
+    }
+    cylinder(h=10,d=largo,center=true);
   }
   cylinder(h=4,d=7);
 }
-//garra_servo();
+garra_servo(18);
 
 module ldr(){
   cylinder(h=2.4,d=5.1);
