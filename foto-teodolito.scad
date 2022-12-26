@@ -14,29 +14,64 @@ number_of_teeth_1=70;
 number_of_teeth_2=number_of_teeth_1 / 2;
 clearance=0.5;
 backlash=0.4;
-e_rueda_1 = 9;
+e_rueda_1 = 12;
+e_rueda_2 = 9;
 d_eje_acimutal=50;
-a_eje_acimutal=40;
+a_eje_acimutal=50;
 
 radio_rueda_1 = pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = number_of_teeth_1);
 radio_rueda_2 = pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = number_of_teeth_2);
 
 module base() {
-    difference(){
-      union(){
-        gear(mm_per_tooth=mm_per_tooth, number_of_teeth=number_of_teeth_1, thickness=e_rueda_1, pressure_angle=20,  clearance=clearance, backlash=backlash );
-    translate([0,0,-a_eje_acimutal+e_rueda_1/2])
-      cylinder(h=a_eje_acimutal,d=d_eje_acimutal+2*3);
-      }
-      cylinder(h=a_eje_acimutal*3, d=d_eje_acimutal, center=true);
+    difference(){     
+        gear(mm_per_tooth=mm_per_tooth, number_of_teeth=number_of_teeth_1, thickness=e_rueda_1, hole_diameter=d_eje_acimutal+2, pressure_angle=20,  clearance=clearance, backlash=backlash );    
+    }
+  
+}
+
+module pie(){
+  largo_pie=60;
+  difference(){  
+    union(){
+      cylinder(h=a_eje_acimutal-e_rueda_1+1, 
+              d1=d_eje_acimutal+2*3,
+              d2=d_eje_acimutal+2*10);   
+      // pies      
+        for(a=[0:120:359])
+          rotate(a) {
+            translate([0,-5,0])
+              cube([largo_pie,10,25]);
+            translate([largo_pie,0,0])
+              cylinder(h=25,d=20);
+            }
+       // muesquitas
+       for(a=[0:120:359])
+         rotate(a) 
+           translate([(d_eje_acimutal+10)/2,0,a_eje_acimutal-e_rueda_1+1])
+             cylinder(h=6,d1=4,d2=5);
+        }      
+    // hueco central
+    cylinder(h=a_eje_acimutal*3, d=d_eje_acimutal, center=true);
+    // huecos tornillos    
+      for(a=[0:120:359])
+          rotate(a) {
+            translate([largo_pie-15,-1,-1])
+              cube([40,2,40]);
+            translate([largo_pie,0,0])
+              cylinder(h=60,d=7,center=true);
+            }
     }
 }
+
+color("green",0.5)
+ translate([0,0,-95.2-1])
+   pie();
 
 module rueda_2(){
   difference(){
     union(){
-      cylinder(d=20,h=6.);
-      gear(mm_per_tooth=mm_per_tooth, number_of_teeth=number_of_teeth_2, thickness=6.9, pressure_angle=20, clearance=clearance, backlash=backlash);
+      cylinder(d=20,h=7.5);
+      gear(mm_per_tooth=mm_per_tooth, number_of_teeth=number_of_teeth_2, thickness=e_rueda_2, pressure_angle=20, clearance=clearance, backlash=backlash);
     }
    rotate(90)
     // OJO: "5" y "3" son JUSTOS
@@ -341,7 +376,7 @@ color("red",0.5)
   translate([0,0,-45.1-e_rueda_1/2])
     base();
 color("blue",0.5)
-  translate([0,radio_rueda_1+radio_rueda_2,-49])
+  translate([0,radio_rueda_1+radio_rueda_2,-45-e_rueda_2/2-1])
     rotate((number_of_teeth_2 % 2) == 0 ? 180/number_of_teeth_2 : 0)
      rueda_2();
     
