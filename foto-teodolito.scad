@@ -27,6 +27,12 @@ radio_rueda_2 = pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = number
 module base() {
     difference(){     
         gear(mm_per_tooth=mm_per_tooth, number_of_teeth=number_of_teeth_1, thickness=e_rueda_1, hole_diameter=d_eje_acimutal+2, pressure_angle=20,  clearance=clearance, backlash=backlash );    
+      // muesquitas
+    for(a=[0:120:359])
+      rotate(a) 
+        translate([(d_eje_acimutal+12)/2+0,0,
+                    -e_rueda_1/2-.1])
+          cylinder(h=6.9,d=6.8);
       }      
 }
 
@@ -35,7 +41,7 @@ module pie(){
     union(){
       cylinder(h=a_eje_acimutal-e_rueda_1+1, 
               d1=d_eje_acimutal+2*3,
-              d2=d_eje_acimutal+2*10);   
+              d2=d_eje_acimutal+2*12);   
       // pies      
         for(a=[0:120:359])
           rotate(a) {
@@ -47,8 +53,8 @@ module pie(){
        // muesquitas
        for(a=[0:120:359])
          rotate(a) 
-           translate([(d_eje_acimutal+10)/2,0,a_eje_acimutal-e_rueda_1+1])
-             cylinder(h=6,d1=4,d2=5);
+           translate([(d_eje_acimutal+12)/2,0,a_eje_acimutal-e_rueda_1+1])
+             cylinder(h=6,d=6);
         }      
     // hueco central
     cylinder(h=a_eje_acimutal*3, d=d_eje_acimutal, center=true);
@@ -386,17 +392,20 @@ translate([0,-48.5,0])
     translate([0,radio_rueda_1+radio_rueda_2-8,-20])
       rotate([0,180,0])
         stepper_28BYJ_48();
-color("red",0.5)
-  translate([0,0,-45.1-e_rueda_1/2])
-    base();
 color("blue",0.5)
   translate([0,radio_rueda_1+radio_rueda_2,-45-e_rueda_2/2-1])
     rotate((number_of_teeth_2 % 2) == 0 ? 180/number_of_teeth_2 : 0)
      rueda_2();
+
+union(){
+color("green",0.8)
+  translate([0,0,-45.1-e_rueda_1/2])
+    base();
     
-color("red",0.5)
- translate([0,0,-95.2-1])
+color("red",0.8)
+ translate([0,0,-95.2-1-0])
    pie();
+}
 
 color("green",0.5)
   for(a=[0:120:359])
