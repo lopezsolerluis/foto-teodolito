@@ -21,7 +21,7 @@ d_eje_acimutal=50;
 a_eje_acimutal=50;
 largo_pie=70;
 
-explo=2;
+explo=0; // 0 o 2
 
 radio_rueda_1 = pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = number_of_teeth_1);
 radio_rueda_2 = pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = number_of_teeth_2);
