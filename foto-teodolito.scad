@@ -6,6 +6,7 @@ use <auxiliares.scad>
 include <BOSL/constants.scad>
 use <BOSL/involute_gears.scad>
 use <BOSL/beziers.scad>
+use <BOSL/metric_screws.scad>
 
 tolj=.4;
 lado=18;
@@ -18,7 +19,8 @@ e_rueda_1 = 12;
 e_rueda_2 = 9;
 d_eje_acimutal=50;
 a_eje_acimutal=50;
-
+largo_pie=70;
+  
 radio_rueda_1 = pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = number_of_teeth_1);
 radio_rueda_2 = pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = number_of_teeth_2);
 
@@ -30,7 +32,6 @@ module base() {
 }
 
 module pie(){
-  largo_pie=70;
   difference(){  
     union(){
       cylinder(h=a_eje_acimutal-e_rueda_1+1, 
@@ -63,10 +64,18 @@ module pie(){
     }
 }
 
-color("green",0.5)
- translate([0,0,-95.2-1])
-   pie();
-
+module manija_pie(){
+  d = 40;
+  difference(){
+    cylinder(h=5,d=d);
+    cylinder(h=20,d=6,center=true);
+    for(a=[0:30:359])
+      rotate(a)
+        translate([d/1.8,0,0])
+          cylinder(h=30,d=9,center=true);
+  }
+}
+  
 module rueda_2(){
   difference(){
     union(){
@@ -330,7 +339,7 @@ module base_sup(){
 //porta_BH1750();
 //translate([-7,-7,5]) BH1750();
 
-rotate([0,-20,0]) {
+rotate([0,-30,0]) {
 translate([0,0,-20.8]){
 //color("gray") translate([0,0,-8]) porta_ldr();
   color("gray") translate([0,0,-8]) porta_BH1750();
@@ -339,6 +348,11 @@ color("lightblue") translate([lado,lado,lado-6]/2) rotate([0,-90,0]) eje(lado,1.
 color("lightblue") translate([-lado,-lado,lado-6]/2) rotate([0,-90,180]) eje(12,1.5);  
 }
 color ("green") translate([0,-39,0]/2) rotate([90,0,0]) eje_aux();  
+translate([12,-24.5,37.0])
+  metric_bolt(size=3, l=15, details=false,
+              orient=ORIENT_X);
+translate([.6,-24.5,37.4])
+  color("lightgrey") cube([2,8.5,8.5],center=true);
 }
 
 color("grey",.5){
@@ -380,3 +394,19 @@ color("blue",0.5)
     rotate((number_of_teeth_2 % 2) == 0 ? 180/number_of_teeth_2 : 0)
      rueda_2();
     
+color("green",0.5)
+ translate([0,0,-95.2-1])
+   pie();
+
+color("darkblue",0.5)
+  for(a=[0:120:359])
+     rotate(a) 
+        translate([largo_pie,0,-105])
+          manija_pie();
+
+for(a=[0:120:359])
+  rotate(a) 
+    translate([largo_pie,0,-105])
+      metric_bolt(headtype="round", size=6, l=35,
+                  details=false, phillips="#2",
+                  orient=ORIENT_ZNEG);
