@@ -27,8 +27,7 @@ radio_rueda_2 = pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = number
 module base() {
     difference(){     
         gear(mm_per_tooth=mm_per_tooth, number_of_teeth=number_of_teeth_1, thickness=e_rueda_1, hole_diameter=d_eje_acimutal+2, pressure_angle=20,  clearance=clearance, backlash=backlash );    
-    }
-  
+      }      
 }
 
 module pie(){
@@ -329,11 +328,13 @@ module base_sup(){
     // más del eje del stepper
    translate([-30,radio_rueda_1+radio_rueda_2,-5])
       cube([60,30,3*alto]);
+    // agujero central
+    cylinder(h=a_eje_acimutal*3,d=d_eje_acimutal-10, center=true);
   }
 }
 
 //color("pink",.5)
-  translate([0,0,-45])
+  !translate([0,0,-45])
     base_sup();
 
 //porta_BH1750();
@@ -349,7 +350,7 @@ color("lightblue") translate([-lado,-lado,lado-6]/2) rotate([0,-90,180]) eje(12,
 }
 color ("green") translate([0,-39,0]/2) rotate([90,0,0]) eje_aux();  
 translate([12,-24.5,37.0])
-  metric_bolt(size=3, l=15, details=false,
+  metric_bolt(size=3, l=15, details=false, pitch=0,
               orient=ORIENT_X);
 translate([.6,-24.5,37.4])
   color("lightgrey") cube([2,8.5,8.5],center=true);
@@ -408,5 +409,5 @@ for(a=[0:120:359])
   rotate(a) 
     translate([largo_pie,0,-105])
       metric_bolt(headtype="round", size=6, l=35,
-                  details=false, phillips="#2",
+                  details=false, pitch=0, phillips="#2",
                   orient=ORIENT_ZNEG);
