@@ -298,11 +298,12 @@ module base_sup(){
 //          cylinder(h=alto,d=48);
 //        cylinder(h=alto,d=48);
 //    }
-       for(x=[35/2,-35/2])      
+       for(y=[35/2,-35/2])      
          hull(){
-          translate([x,radio_rueda_1+radio_rueda_2-4,0])
+          translate([-(radio_rueda_1+radio_rueda_2-4),
+                     y,0])
             cylinder(d=12,h=alto);
-          translate([x,0,0])
+          translate([0,y,0])
             cylinder(d=12,h=alto);
         }
       hull(){
@@ -334,15 +335,17 @@ module base_sup(){
         translate([x,y,0])
           cylinder(d=tor2,h=6*alto,center=true);
     // alitas del stepper
-    for(x=[35/2,-35/2])      
+    for(y=[35/2,-35/2])      
       hull(){
-        translate([x,radio_rueda_1+radio_rueda_2-8+1.5,0])
+        translate([-(radio_rueda_1+radio_rueda_2-8+1.5),
+        y,0])
           cylinder(d=tor2,h=3*alto,center=true);
-        translate([x,radio_rueda_1+radio_rueda_2-8-1.5,0])
+        translate([-(radio_rueda_1+radio_rueda_2-8-1.5),
+        y,0])
           cylinder(d=tor2,h=3*alto,center=true);
       }
     // eje del stepper
-    translate([0,radio_rueda_1+radio_rueda_2,0])
+    translate([-(radio_rueda_1+radio_rueda_2),0,0])
        cylinder(d=26,h=3*alto,center=true);
     // más del eje del stepper
 //   translate([-30,radio_rueda_1+radio_rueda_2,-5])
@@ -395,25 +398,30 @@ translate([-6.5-7*explo,-70-30*explo,-5.3])
 ////color("white") translate([0,0,100]) ldr();
 translate([100,-78/2-5.5,-39])
   rotate([0,0,90])
-    color ("cyan", .5) robotbit();
+    color ("cyan", .8) robotbit();
 translate([11.8/2,-80-30*explo,6])
   rotate([0,90,90])
     color ("cyan", .8) servo_s90g ();
 translate([0,-48.5-17*explo,0])
   rotate([0,-20,0])
     rotate([0,90,-90])
-      color ("cyan", .5) garra_servo(lado);
+      color ("cyan", .8) garra_servo(lado);
 //  color ("cyan", .5) robotbit();
   
-color ("cyan", .5) 
-  translate([0,radio_rueda_1+radio_rueda_2-8+10*explo,-20])
-    rotate([0,180,0])
+color ("cyan", .8) 
+  rotate(90)
+    translate([0,
+               radio_rueda_1+radio_rueda_2-8+10*explo,
+               -20])
+      rotate([0,180,0])
        stepper_28BYJ_48();
 
-color("blue",0.5)
-  translate([0,radio_rueda_1+radio_rueda_2+10*explo,-45-e_rueda_2/2-1-20*explo])
-    rotate((number_of_teeth_2 % 2) == 0 ? 180/number_of_teeth_2 : 0)
-     rueda_2();
+color("blue",0.8)
+rotate(90)
+  translate([0,(radio_rueda_1+radio_rueda_2+10*explo),
+              -45-e_rueda_2/2-1-20*explo])
+     rotate((number_of_teeth_2 % 2) == 1 ? 180/  number_of_teeth_2 : 0)
+      rueda_2();
 
 
 translate([0,0,-45-10*explo])
