@@ -20,7 +20,9 @@ e_rueda_2 = 9;
 d_eje_acimutal=50;
 a_eje_acimutal=50;
 largo_pie=70;
-  
+
+explo=2;
+
 radio_rueda_1 = pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = number_of_teeth_1);
 radio_rueda_2 = pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = number_of_teeth_2);
 
@@ -350,8 +352,6 @@ module base_sup(){
   }
 }
 
-translate([0,0,-45])
-  base_sup();
 
 //porta_BH1750();
 //translate([-7,-7,5]) BH1750();
@@ -364,24 +364,29 @@ tubo();
 color("lightblue") translate([lado,lado,lado-6]/2) rotate([0,-90,0]) eje(lado,1.5);
 color("lightblue") translate([-lado,-lado,lado-6]/2) rotate([0,-90,180]) eje(12,1.5);  
 }
-color ("green") translate([0,-39,0]/2) rotate([90,0,0]) eje_aux();  
-translate([12,-24.5,37.0])
+color ("green") translate([0,-39-25*explo,0]/2) rotate([90,0,0]) eje_aux();  
+translate([12+7*explo,-24.5-12.5*explo,37.0])
   metric_bolt(size=3, l=15, details=false, pitch=0,
               orient=ORIENT_X);
-translate([.6,-24.5,37.4])
-  color("lightgrey") cube([2,8.5,8.5],center=true);
+translate([.6,-24.5-20*explo,37.4])
+  color("lightgrey") 
+    difference(){
+      cube([2,8.5,8.5],center=true);
+      rotate([0,90,0])
+        cylinder(h=5,d=3,center=true);
+    }
 }
 
-color("grey",.5){
-  translate([0,-1.39*27.0,0])
+color("grey",.8){
+  translate([0,-1.39*27-30*explo,0])
     pilar(true);
-    translate([0,27.0,0])
+    translate([0,27.0+15*explo,0])
     pilar(false);
 }
-color("blue",.5){
-translate([6.5,-70,-5.3])
+color("blue",.8){
+translate([6.5+7*explo,-70-30*explo,-5.3])
   abrazadera_servo(false);
-translate([-6.5,-70,-5.3])
+translate([-6.5-7*explo,-70-30*explo,-5.3])
   rotate([0,180,0])
     abrazadera_servo(true);
 }
@@ -391,41 +396,46 @@ translate([-6.5,-70,-5.3])
 translate([100,-78/2-5.5,-39])
   rotate([0,0,90])
     color ("cyan", .5) robotbit();
-translate([11.8/2,-80,6])
+translate([11.8/2,-80-30*explo,6])
   rotate([0,90,90])
-    color ("cyan", .5) servo_s90g ();
-translate([0,-48.5,0])
+    color ("cyan", .8) servo_s90g ();
+translate([0,-48.5-17*explo,0])
   rotate([0,-20,0])
     rotate([0,90,-90])
       color ("cyan", .5) garra_servo(lado);
 //  color ("cyan", .5) robotbit();
-  color ("cyan", .5) 
-    translate([0,radio_rueda_1+radio_rueda_2-8,-20])
-      rotate([0,180,0])
-        stepper_28BYJ_48();
+  
+color ("cyan", .5) 
+  translate([0,radio_rueda_1+radio_rueda_2-8+10*explo,-20])
+    rotate([0,180,0])
+       stepper_28BYJ_48();
+
 color("blue",0.5)
-  translate([0,radio_rueda_1+radio_rueda_2,-45-e_rueda_2/2-1])
+  translate([0,radio_rueda_1+radio_rueda_2+10*explo,-45-e_rueda_2/2-1-20*explo])
     rotate((number_of_teeth_2 % 2) == 0 ? 180/number_of_teeth_2 : 0)
      rueda_2();
 
 
+translate([0,0,-45-10*explo])
+  base_sup();
+
 color("red",0.8)
-  translate([0,0,-45.1-e_rueda_1/2])
+  translate([0,0,-45.1-e_rueda_1/2-20*explo])
     base();
     
 color("red",0.8)
- translate([0,0,-95.2-1-0])
+ translate([0,0,-95.2-1-35*explo])
    pie();
 
 color("green",0.8)
   for(a=[0:120:359])
      rotate(a) 
-        translate([largo_pie,0,-105])
+        translate([largo_pie,0,-105-55*explo])
           manija_pie();
 
 for(a=[0:120:359])
   rotate(a) 
-    translate([largo_pie,0,-105])
+    translate([largo_pie,0,-105-55*explo])
       metric_bolt(headtype="round", size=6, l=35,
                   details=false, pitch=0, phillips="#2",
                   orient=ORIENT_ZNEG);
