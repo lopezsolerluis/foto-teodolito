@@ -333,9 +333,8 @@ module base_sup(){
   }
 }
 
-//color("pink",.5)
-  !translate([0,0,-45])
-    base_sup();
+translate([0,0,-45])
+  base_sup();
 
 //porta_BH1750();
 //translate([-7,-7,5]) BH1750();
@@ -395,11 +394,11 @@ color("blue",0.5)
     rotate((number_of_teeth_2 % 2) == 0 ? 180/number_of_teeth_2 : 0)
      rueda_2();
     
-color("green",0.5)
+color("red",0.5)
  translate([0,0,-95.2-1])
    pie();
 
-color("darkblue",0.5)
+color("green",0.5)
   for(a=[0:120:359])
      rotate(a) 
         translate([largo_pie,0,-105])
