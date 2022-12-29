@@ -22,6 +22,7 @@ a_eje_acimutal=50;
 largo_pie=70;
 
 explo=0; // 0 o 2
+tubo_seccionado=false; // true or false
 
 radio_rueda_1 = pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = number_of_teeth_1);
 radio_rueda_2 = pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = number_of_teeth_2);
@@ -96,12 +97,20 @@ module rueda_2(){
 }
 
 module tubo() {
-  largo=100;
-  dia_int=lado-5;
+  let(alfa=30,e=6,h=10,d=h*tan(alfa),
+      L=lado+2*(e+d),largo=100,dia_int=lado-5) {  
   difference() {
-    translate([-lado/2, -lado/2, 0])
-      cube([lado,lado,largo]);    
-    cylinder(h=3*largo,d=dia_int,center=true);
+    union(){
+      translate([-lado/2, -lado/2, 0])
+        cube([lado,lado,largo]);  
+      // lengüeta movimiento fino
+      translate([-lado/2,-lado/2-h-10.5,L-d+15])
+      cube([5,30,15]);
+    }    
+    translate([0,0,15-2])
+      cylinder(h=largo,d=dia_int);
+    translate([0,0,-.01])
+      cylinder(h=15,d1=dia_int-2,d2=dia_int);
   }
   // bafles
   difference(){
@@ -110,9 +119,7 @@ module tubo() {
         cylinder(h=.9,d=dia_int+1,center=true);
     cylinder(h=3*largo,d=8,center=true);
   }
-  // ejes
-  let(alfa=30,e=6,h=10,d=h*tan(alfa),
-      L=lado+2*(e+d)) {
+  // ejes  
     for(s=[0,1])  
       rotate([s*180,-90,0])  
       translate([0,lado/2,0])
@@ -121,10 +128,7 @@ module tubo() {
           polygon([[0,0],[L,0],[L-d,h], [d,h]]);
         linear_extrude(3*lado,center=true)
           polygon([[e,0], [L-e,0], [L-d-e,h+.01], [d+e,h+.01]]);
-        }
-   // lengüeta movimiento fino
-   translate([-lado/2,-lado/2-h-10.5,L-d+15])
-     cube([5,30,15]);
+        }   
     }
 }
 module eje(d_eje,f) {
@@ -203,14 +207,27 @@ module abrazadera_servo(tuerca){
 }
 
 
+
+module acople_sensor(){
+  dia_int=lado-5.5;  
+  difference() {
+    cylinder(h=13.2,d1=dia_int-2,d2=dia_int);
+  translate([0,0,2])
+    cylinder(h=30,d1=8.5,d2=9);
+  for(a=[0,90])
+    rotate(a)
+      translate([-1.5,-10,2])
+        cube([3,20,20]);
+  }
+}
 module porta_ldr () {  
-  largo=8;
-  dia_int=9;
+  largo=8;  
   difference(){
     union(){
       translate([-lado/2, -lado/2, 0])
         cube([lado,lado,largo]);      
-      cylinder(h=largo+12,d=dia_int-2*tolj);
+      translate([0,0,largo])
+        acople_sensor();      
     }
     translate([0,0,5])
       cylinder(h=3*largo,d=6.5);
@@ -220,14 +237,14 @@ module porta_ldr () {
   }
 }
 module porta_BH1750() { 
-  largo=8;
-  dia_int=9;
+  largo=8;  
   e=3;
   difference(){
     union(){
       translate([-7-e, -7-e, 0])
         cube([18.5+2*e,14+2*e,largo]);      
-      cylinder(h=largo+12,d=dia_int-2*tolj);
+      translate([0,0,largo])
+        acople_sensor();
     }
     translate([0,0,5])
       cylinder(h=3*largo,d=6.5);
@@ -361,12 +378,20 @@ module base_sup(){
 
 rotate([0,-30,0]) {
 translate([0,0,-20.8]){
-//color("gray") translate([0,0,-8]) porta_ldr();
-  color("gray") translate([0,0,-8]) porta_BH1750();
-tubo();
-color("lightblue") translate([lado,lado,lado-6]/2) rotate([0,-90,0]) eje(lado,1.5);
-color("lightblue") translate([-lado,-lado,lado-6]/2) rotate([0,-90,180]) eje(12,1.5);  
-}
+//  color("gray") translate([0,0,-8]) porta_ldr();
+  color("gray") translate([0,0,-8-0]) porta_BH1750();
+  if (tubo_seccionado) {
+    difference(){
+      tubo();
+      translate([0,-20,-100])
+        cube([40,40,300]);
+      }
+    } else {
+      tubo();
+    }
+  color("lightblue") translate([lado,lado,lado-6]/2) rotate([0,-90,0]) eje(lado,1.5);
+  color("lightblue") translate([-lado,-lado,lado-6]/2) rotate([0,-90,180]) eje(12,1.5);  
+  }
 color ("green") translate([0,-39-25*explo,0]/2) rotate([90,0,0]) eje_aux();  
 translate([12+7*explo,-24.5-12.5*explo,37.0])
   metric_bolt(size=3, l=15, details=false, pitch=0,
@@ -383,15 +408,15 @@ translate([.6,-24.5-20*explo,37.4])
 color("grey",.8){
   translate([0,-1.39*27-30*explo,0])
     pilar(true);
-    translate([0,27.0+15*explo,0])
+  translate([0,27.0+15*explo,0])
     pilar(false);
 }
 color("blue",.8){
-translate([6.5+7*explo,-70-30*explo,-5.3])
-  abrazadera_servo(false);
-translate([-6.5-7*explo,-70-30*explo,-5.3])
-  rotate([0,180,0])
-    abrazadera_servo(true);
+  translate([6.5+7*explo,-70-30*explo,-5.3])
+    abrazadera_servo(false);
+  translate([-6.5-7*explo,-70-30*explo,-5.3])
+    rotate([0,180,0])
+      abrazadera_servo(true);
 }
 
 
