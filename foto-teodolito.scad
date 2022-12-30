@@ -105,12 +105,15 @@ module tubo() {
         cube([lado,lado,largo]);  
       // lengüeta movimiento fino
       translate([-lado/2,-lado/2-h-10.5,L-d+15])
-      cube([5,30,15]);
+        cube([5,30,15]);
     }    
     translate([0,0,15-2])
       cylinder(h=largo,d=dia_int);
     translate([0,0,-.01])
       cylinder(h=15,d1=dia_int-2,d2=dia_int);
+    // hueco planchita
+    translate([-lado/2+4,-lado/2-h-11,L-d+14])
+        cube([1.1,11,17]);
   }
   // bafles
   difference(){
