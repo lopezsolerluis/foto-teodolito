@@ -98,7 +98,7 @@ module rueda_2(){
 
 module tubo() {
   let(alfa=30,e=6,h=10,d=h*tan(alfa),
-      L=lado+2*(e+d),largo=100,dia_int=lado-5) {  
+      L=lado+2*(e+d),largo=100,dia_int=lado-4) {  
   difference() {
     union(){
       translate([-lado/2, -lado/2, 0])
@@ -107,10 +107,8 @@ module tubo() {
       translate([-lado/2,-lado/2-h-10.5,L-d+15])
         cube([5,30,15]);
     }    
-    translate([0,0,15-2])
-      cylinder(h=largo,d=dia_int);
-    translate([0,0,-.01])
-      cylinder(h=15,d1=dia_int-2,d2=dia_int);
+    translate([0,0,-1])
+      cylinder(h=largo*2,d=dia_int);    
     // hueco planchita
     translate([-lado/2+4,-lado/2-h-11,L-d+14])
         cube([1.1,11,17]);
@@ -119,7 +117,7 @@ module tubo() {
   difference(){
     for(z=[15:15:largo-1])
       translate([0,0,z])
-        cylinder(h=.9,d=dia_int+1,center=true);
+        cylinder(h=.7,d=dia_int+1,center=true);
     cylinder(h=3*largo,d=8,center=true);
   }
   // ejes  
@@ -383,7 +381,7 @@ rotate([0,-30,0]) {
 translate([0,0,-20.8]){
 //  color("gray") translate([0,0,-8]) porta_ldr();
   color("gray") translate([0,0,-8-0]) porta_BH1750();
-  if (tubo_seccionado) {
+  !if (tubo_seccionado) {
     difference(){
       tubo();
       translate([0,-20,-100])
