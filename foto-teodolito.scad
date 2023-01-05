@@ -98,7 +98,7 @@ module rueda_2(){
 
 module tubo() {
   let(alfa=30,e=6,h=10,d=h*tan(alfa),
-      L=lado+2*(e+d),largo=100,dia_int=lado-4) {  
+      L=lado+2*(e+d),largo=100,dia_int=lado-4) {     
   difference() {
     union(){
       translate([-lado/2, -lado/2, 0])
@@ -134,7 +134,7 @@ module tubo() {
 }
 module eje(d_eje,f) {
   let(alfa=30,e=6,h=10,d=h*tan(alfa),
-      L=lado+2*(e+d)){
+      L=lado+2*(e+d)){ 
   linear_extrude(lado)
     polygon([[0,0],[L-2*e,0],[L-2*e-d,h], [d,h]]);
   translate([L/2-e,0,lado/2])
@@ -379,8 +379,9 @@ module base_sup(){
 
 rotate([0,-30,0]) {
 translate([0,0,-20.8]){
-//  color("gray") translate([0,0,-8]) porta_ldr();
-  color("gray") translate([0,0,-8-0]) porta_BH1750();
+//  color("#111111") translate([0,0,-8]) porta_ldr();
+  color("#111111") translate([0,0,-8-0]) porta_BH1750();
+  color("#222222")
   if (tubo_seccionado) {
     difference(){
       tubo();
@@ -406,7 +407,7 @@ translate([.6,-24.5-20*explo,37.4])
     }
 }
 
-color("grey",.8){
+color("pink",.9){
   translate([0,-1.39*27-30*explo,0])
     pilar(true);
   translate([0,27.0+15*explo,0])
@@ -451,7 +452,7 @@ rotate(90)
 
 
 translate([0,0,-45-10*explo])
-  base_sup();
+  color("navajowhite") base_sup();
 
 color("red",0.8)
   translate([0,0,-45.1-e_rueda_1/2-20*explo])
