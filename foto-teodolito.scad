@@ -393,8 +393,8 @@ translate([0,0,-20.8]){
     } else {
       tubo();
     }
-  color("lightblue") translate([lado,lado,lado-6]/2) rotate([0,-90,0]) eje(lado,1.5);
-  color("lightblue") translate([-lado,-lado,lado-6]/2) rotate([0,-90,180]) eje(12,1.5);  
+  color("pink") translate([lado,lado,lado-6]/2) rotate([0,-90,0]) eje(lado,1.5);
+  color("pink") translate([-lado,-lado,lado-6]/2) rotate([0,-90,180]) eje(12,1.5);  
   }
 color ("green") translate([0,-39-25*explo,0]/2) rotate([90,0,0]) eje_aux();  
 translate([12+7*explo,-24.5-12.5*explo,37.0])
@@ -409,7 +409,7 @@ translate([.6,-24.5-20*explo,37.4])
     }
 }
 
-color("pink",.9){
+color("deepskyblue",.9){
   translate([0,-1.39*27-30*explo,0])
     pilar(true);
   translate([0,27.0+15*explo,0])
@@ -427,44 +427,42 @@ color("blue",.8){
 ////color("white") translate([0,0,100]) ldr();
 translate([100,-78/2-5.5,-39])
   rotate([0,0,90])
-    color ("cyan", .8) robotbit();
+    robotbit();
 translate([11.8/2,-80-30*explo,6])
   rotate([0,90,90])
-    color ("cyan", .8) servo_s90g ();
+    servo_s90g ();
 translate([0,-48.5-17*explo,0])
   rotate([0,-20,0])
     rotate([0,90,-90])
-      color ("cyan", .8) garra_servo(lado);
+      garra_servo(lado);
 //  color ("cyan", .5) robotbit();
   
-color ("cyan", .8) 
-  rotate(90)
-    translate([0,
-               radio_rueda_1+radio_rueda_2-8+10*explo,
-               -20])
-      rotate([0,180,0])
+rotate(90)
+  translate([0,
+             radio_rueda_1+radio_rueda_2-8+10*explo,
+             -20])
+    rotate([0,180,0])
        stepper_28BYJ_48();
 
-color("blue",0.8)
+color("sienna",0.9)
 rotate(90)
   translate([0,(radio_rueda_1+radio_rueda_2+10*explo),
               -45-e_rueda_2/2-1-20*explo])
      rotate((number_of_teeth_2 % 2) == 1 ? 180/  number_of_teeth_2 : 0)
       rueda_2();
 
-
 translate([0,0,-45-10*explo])
   color("navajowhite") base_sup();
 
-color("red",0.8)
+color("teal",0.9)
   translate([0,0,-45.1-e_rueda_1/2-20*explo])
     base();
     
-color("red",0.8)
+color("teal",0.9)
  translate([0,0,-95.2-1-35*explo])
    pie();
 
-color("green",0.8)
+color("mediumslateblue",0.8)
   for(a=[0:120:359])
      rotate(a) 
         translate([largo_pie,0,-105-55*explo])
