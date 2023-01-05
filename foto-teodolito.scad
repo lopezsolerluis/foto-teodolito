@@ -212,9 +212,9 @@ module abrazadera_servo(tuerca){
 module acople_sensor(){
   dia_int=lado-4; 
   difference() {
-    cylinder(h=13.2,d1=dia_int-1,d2=dia_int+.4);
+    cylinder(h=13.2,d1=dia_int-.8,d2=dia_int);
     translate([0,0,2])
-      cylinder(h=30,d=dia_int-5);
+      cylinder(h=30,d=dia_int-4);
     for(a=[45,90+45])
       rotate(a)
         translate([-1.5,-10,2])
@@ -379,8 +379,10 @@ module base_sup(){
 
 rotate([0,-30,0]) {
 translate([0,0,-20.8]){
-//  color("#111111") translate([0,0,-8]) porta_ldr();
-  color("#111111") translate([0,0,-8-0]) porta_BH1750();
+  color("#111111") 
+    translate([0,0,-8]) porta_ldr();
+  color("#111111") 
+    translate([0,0,-8-0]) porta_BH1750();
   color("#222222")
   if (tubo_seccionado) {
     difference(){
