@@ -210,9 +210,9 @@ module abrazadera_servo(tuerca){
 
 
 module acople_sensor(){
-  dia_int=lado-4;  
+  dia_int=lado-4; 
   difference() {
-    cylinder(h=13.2,d1=dia_int-2,d2=dia_int);
+    cylinder(h=13.2,d1=dia_int-1,d2=dia_int+.4);
     translate([0,0,2])
       cylinder(h=30,d=dia_int-5);
     for(a=[45,90+45])
@@ -234,7 +234,7 @@ module porta_ldr () {
       cylinder(h=3*largo,d=6.5);
     for(s=[-1,1])
       translate([s*3.4/2,0,-10])
-        cylinder(h=34, d=1);  
+        cylinder(h=34, d=1.5);  
   }
 }
 module porta_BH1750() { 
@@ -249,13 +249,13 @@ module porta_BH1750() {
     }
     translate([0,0,5])
       cylinder(h=3*largo,d=6.5);
-    translate([-7-1,-7-1,-.01])
-      cube([18.5+2,14+2,6]);      
+    translate([-7.6,-14.7/2,-.01])
+      cube([19.1,14.7,6.7]);      
   }
   // pines para la plaquita
   for (y=[1+1.5,14-1-1.5])
       translate([-7+1.5+1,y-7,0])
-        cylinder(h=7,d=2);
+        cylinder(h=7,d=2.7);
 }
 
 module eje_aux(){
