@@ -8,6 +8,11 @@ use <BOSL/involute_gears.scad>
 use <BOSL/beziers.scad>
 use <BOSL/metric_screws.scad>
 
+explo=0; // 0 o 2
+tubo_seccionado=false; // true o false
+reduccion=3; // 2, 3 o 4
+con_tornillo=false;
+
 tolj=.4;
 lado=18;
 mm_per_tooth = 5;
@@ -19,11 +24,13 @@ e_rueda_2 = 9;
 d_eje_acimutal=50;
 a_eje_acimutal=50;
 largo_pie=70;
-
-explo=0; // 0 o 2
-tubo_seccionado=false; // true o false
-reduccion=3; // 2, 3 o 4
-con_tornillo=false;
+alto_base=.28*29;
+base_pilar=.28*31;
+largo_pie_pilar=75;
+d_tor=2.5;
+a_tuer=9;
+h_tuer=2.4;
+echo(alto_base, base_pilar);
 
 function radio_rueda(dientes) =
   pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = dientes);
@@ -94,9 +101,10 @@ module manija_pie(){
 }
   
 module rueda_secundaria(){
+  translate([0,0,-3.1])
   difference(){
     union(){
-     cylinder(d=20,h=7.5);
+     cylinder(d=17,h=10.5);
      gear(mm_per_tooth=mm_per_tooth, 
           number_of_teeth=number_of_teeth_ppal/reduccion,
           thickness=e_rueda_2, 
@@ -160,7 +168,7 @@ module eje(d_eje,f) {
 module pilar(servo) {
   ancho=15;
   alto2=-40;
-  alto3=10;
+  alto3=base_pilar;
   difference(){
     hull(){
       rotate([90,0,0])
@@ -172,12 +180,12 @@ module pilar(servo) {
       cylinder(h=30,d=lado+1,center=true);
   }
   // pie
-  largo_pie=75;
+  largo_pie_pilar=75;
   difference(){
-    translate([-largo_pie/2,-ancho/2,alto2])
-      cube([largo_pie,ancho,alto3]);
+    translate([-largo_pie_pilar/2,-ancho/2,alto2])
+      cube([largo_pie_pilar,ancho,alto3]);
     for(s=[-1,1])
-      translate([(largo_pie+50)/4*s,0,alto2])
+      translate([(largo_pie_pilar+50)/4*s,0,alto2])
         cylinder(h=3*alto3,d=5,center=true);
   }
   // soporte servo
@@ -313,64 +321,77 @@ module eje_aux(){
   }
 }
 
-module base_sup(){
-  alto=6;
+module base_sup(){  
   difference() {
     union(){
       hull(){        
         for(s=[-1,1]){
         translate([s*36,33,0])
-          cylinder(h=alto,d=10);
+          cylinder(h=alto_base,d=10);
         translate([s*36,-44,0])
-          cylinder(h=alto,d=10);
+          cylinder(h=alto_base,d=10);
         }
       }
        for(y=[35/2,-35/2])      
          hull(){
-          translate([-distancia_ruedas_max+6,
+          translate([-distancia_ruedas_max+3,
                      y,0])
-            cylinder(d=12,h=alto);
+            cylinder(d=14,h=alto_base);
           translate([0,y,0])
-            cylinder(d=12,h=alto);
+            cylinder(d=14,h=alto_base);
         }
       hull(){
-       translate([95,30.5,0])
-         cylinder(h=alto,d=15);
+       translate([97,30.5,0])
+         cylinder(h=alto_base,d=15);
        translate([0,30.5,0])
-         cylinder(h=alto,d=15);
+         cylinder(h=alto_base,d=15);
       }  
       hull(){
-       translate([95,-41.5,0])
-         cylinder(h=alto,d=15);
+       translate([97,-41.5,0])
+         cylinder(h=alto_base,d=15);
        translate([0,-41.5,0])
-         cylinder(h=alto,d=15);
+         cylinder(h=alto_base,d=15);
       }  
       // eje acimutal
       translate([0,0,-a_eje_acimutal])
         cylinder(h=a_eje_acimutal,d=d_eje_acimutal-.8);
     }
-    // agujeros para tornillos
-    tor2=4;
+    // agujeros para tornillos    
     // pilares
     for(x=[31.25,-31.25])
-      for(y=[27,-37.55])
+      for(y=[27,-37.55]) {
         translate([x,y,0])
-          cylinder(d=tor2,h=3*alto,center=true);
+          cylinder(d=d_tor,h=3*alto_base,center=true);
+        translate([x,y,0])
+          cube([a_tuer,a_tuer,4.4*2],center=true);
+      }
     // microbit
     for(x=[48,95])
-      for(y=[30.5,-41.5])
+      for(y=[30.5,-41.5]){
         translate([x,y,0])
-          cylinder(d=tor2,h=6*alto,center=true);
+          cylinder(d=d_tor,h=6*alto_base,center=true);
+        translate([x,y,0])
+          cube([a_tuer,a_tuer,3.1*2],center=true);
+      }
     // alitas del stepper
     for(y=[35/2,-35/2]) 
-      for (x=radio_ruedas_secundarias)
-      hull(){
-        translate([-(radio_rueda_ppal+x-8+1.5),
-        y,0])
-          cylinder(d=tor2,h=3*alto,center=true);
-        translate([-(radio_rueda_ppal+x-8-1.5),
-        y,0])
-          cylinder(d=tor2,h=3*alto,center=true);      
+      for (x=radio_ruedas_secundarias){
+        hull(){
+          translate([-(radio_rueda_ppal+x-8+1.5),
+          y,0])
+            cylinder(d=d_tor,h=3*alto_base,center=true);
+          translate([-(radio_rueda_ppal+x-8-1.5),
+          y,0])
+            cylinder(d=d_tor,h=3*alto_base,center=true);      
+        }
+        hull(){
+          translate([-(radio_rueda_ppal+x-8+1.5),
+          y,0])
+          cube([a_tuer,8.5,3.1*2],center=true);           
+          translate([-(radio_rueda_ppal+x-8-1.5),
+          y,0])
+            cube([a_tuer,8.5,3.1*2],center=true);
+        } 
       }
     // agujero central
     cylinder(h=a_eje_acimutal*3,d=d_eje_acimutal-10, center=true);
@@ -429,9 +450,8 @@ color("red",.8){
       abrazadera_servo(true);
 }
 
-
 ////color("white") translate([0,0,100]) ldr();
-translate([100,-78/2-5.5,-39])
+translate([100,-78/2-5.5,-40])
   rotate([0,0,90])
     robotbit();
 translate([11.8/2,-80-30*explo,6])
@@ -440,13 +460,11 @@ translate([11.8/2,-80-30*explo,6])
 translate([0,-48.5-17*explo,0])
   rotate([0,-20,0])
     rotate([0,90,-90])
-      garra_servo(lado);
-//  color ("cyan", .5) robotbit();
-  
+      garra_servo(lado);  
 rotate(90)
   translate([0,
              distancia_ruedas -8+10*explo,
-             -20])
+             -21])
     rotate([0,180,0])
        stepper_28BYJ_48();
 
@@ -454,33 +472,42 @@ color("sienna",0.9)
 rotate(90)
   translate([0,
             distancia_ruedas +10*explo,
-            -45-e_rueda_2/2-1-20*explo])
+            -46-e_rueda_2/2-1-20*explo])
      rotate(180/(number_of_teeth_ppal/reduccion))
       rueda_secundaria();
 
-translate([0,0,-45-10*explo])
+translate([0,0,-40-alto_base-.1-10*explo])
   color("navajowhite") base_sup();
 
 color("teal",0.9)
-  translate([0,0,-45.1-e_rueda_1/2-20*explo])
+  translate([0,0,-40-alto_base-.15-e_rueda_1/2-20*explo])
     rueda_base();
     
 color("teal",0.9)
- translate([0,0,-95.2-1-35*explo])
+  translate([0,0,-(52.2+alto_base+a_eje_acimutal-e_rueda_1+1)-35*explo])
    pie();
 
 color("green",0.8)
   for(a=[0:120:359])
      rotate(a) 
-        translate([largo_pie,0,-105-55*explo])
+        translate([largo_pie_pilar,0,-105-55*explo])
           manija_pie();
 
 if (con_tornillo)
   for(a=[0:120:359])
     rotate(a) 
-      translate([largo_pie,0,-105-55*explo])
+      translate([largo_pie_pilar,0,-105-55*explo])
         metric_bolt(headtype="round", 
                     size=6, l=35,  
                     details=false, 
                     pitch=0, phillips="#2",
                     orient=ORIENT_ZNEG);
+//  translate([(largo_pie_pilar+50)/4,27+13,-40+base_pilar])  
+//        metric_bolt(headtype="round", 
+//                    size=3, l=15.875,  
+//                    details=false, 
+//                    pitch=0, phillips="#2",
+//                    orient=ORIENT_Z);
+//  translate([(largo_pie_pilar+50)/4,27+13,-40.2+base_pilar-alto_base*2-.2+2+.5])  
+//      cube([8,8,h_tuer],center=true);
+//  
