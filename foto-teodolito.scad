@@ -23,6 +23,7 @@ largo_pie=70;
 explo=0; // 0 o 2
 tubo_seccionado=false; // true o false
 reduccion=3; // 2, 3 o 4
+con_tornillo=false;
 
 function radio_rueda(dientes) =
   pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = dientes);
@@ -400,9 +401,11 @@ translate([0,0,-20.8]){
   color("pink") translate([-lado,-lado,lado-6]/2) rotate([0,-90,180]) eje(12,1.5);  
   }
 color ("mediumslateblue") translate([0,-39-25*explo,0]/2) rotate([90,0,0]) eje_aux();  
-translate([12+7*explo,-24.5-12.5*explo,37.0])
-  metric_bolt(size=3, l=15, details=false, pitch=0,
-              orient=ORIENT_X);
+  if(con_tornillo)
+    translate([12+7*explo,-24.5-12.5*explo,37.0])
+      metric_bolt(size=3, l=15, 
+                  details=false, pitch=0,
+                  orient=ORIENT_X);
 translate([.6,-24.5-20*explo,37.4])
   color("lightgrey") 
     difference(){
@@ -472,9 +475,12 @@ color("green",0.8)
         translate([largo_pie,0,-105-55*explo])
           manija_pie();
 
-for(a=[0:120:359])
-  rotate(a) 
-    translate([largo_pie,0,-105-55*explo])
-      metric_bolt(headtype="round", size=6, l=35,
-                  details=false, pitch=0, phillips="#2",
-                  orient=ORIENT_ZNEG);
+if (con_tornillo)
+  for(a=[0:120:359])
+    rotate(a) 
+      translate([largo_pie,0,-105-55*explo])
+        metric_bolt(headtype="round", 
+                    size=6, l=35,  
+                    details=false, 
+                    pitch=0, phillips="#2",
+                    orient=ORIENT_ZNEG);
