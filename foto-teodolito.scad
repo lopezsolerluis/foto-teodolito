@@ -10,7 +10,7 @@ use <BOSL/metric_screws.scad>
 
 explo=0; // 0 o 2
 tubo_seccionado=false; // true o false
-reduccion=3; // 2, 3 o 4
+reduccion=2; // 2, 3 o 4
 con_tornillo=false;
 
 tolj=.4;
@@ -289,11 +289,6 @@ module eje_aux(){
       cylinder(h=ancho1,d=lado);      
       translate([-lado/2+6,0,0])
         cube([e,46,ancho2]);                
-      // elástico viejo
-//      bez = [ [.1,0],[0,20],[-7.5,30],[-14,20],[-14,-16],[-10,-17],[-10,-10],[-10,10],[-7.5,22],[-5,10],[-4.9,0] ];
-//        translate([1,44,0])
-//          trace_bezier(bez, N=2);  
-//      linear_extrude_bezier(bez, N=2, height=ancho2, splinesteps=32, convexity=5);
       // elástico      
       bez = [ [0,0],[-4,10],[-4,40],[-6,43],[-8,40],[-8,10],[-4,0],[-3,-3] ];
       translate([-5,5,0])
@@ -301,14 +296,14 @@ module eje_aux(){
       linear_extrude_bezier(bez, N=2, height=ancho2, splinesteps=32, convexity=5);
     }    
     // hueco
-    cylinder(h=ancho1+12,d=12+1,center=true);
+    cylinder(h=ancho1+12,d=12+.5,center=true);
     // tuerca
-    translate([-2.5+2.1/2+1,lado*2.3-8.5,-ancho2])
-      cube([2.1,9,ancho2*3]);
+    translate([-.65,lado*2.3-8.5,-ancho2])
+      cube([2.5,9,ancho2*3]);
     // tornillo
-    translate([-5,lado*2.3-8.5/2,ancho2/2])
+    translate([-5,lado*2.3-8.5/2+.25,ancho2/2])
       rotate([0,90,0])
-        cylinder(d=4,h=12);    
+        cylinder(d=3.7,h=12);    
     // hueco garra servo
     translate([0,0,ancho1-3])
       rotate(90)
@@ -490,13 +485,13 @@ color("teal",0.9)
 color("green",0.8)
   for(a=[0:120:359])
      rotate(a) 
-        translate([largo_pie_pilar,0,-105-55*explo])
+        translate([largo_pie,0,-105-55*explo])
           manija_pie();
 
 if (con_tornillo)
   for(a=[0:120:359])
     rotate(a) 
-      translate([largo_pie_pilar,0,-105-55*explo])
+      translate([largo_pie,0,-105-55*explo])
         metric_bolt(headtype="round", 
                     size=6, l=35,  
                     details=false, 
