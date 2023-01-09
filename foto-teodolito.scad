@@ -11,8 +11,7 @@ use <BOSL/metric_screws.scad>
 tolj=.4;
 lado=18;
 mm_per_tooth = 5;
-number_of_teeth_1=70;
-number_of_teeth_2=number_of_teeth_1 / 2;
+number_of_teeth_ppal=72;
 clearance=0.5;
 backlash=0.4;
 e_rueda_1 = 12;
@@ -23,13 +22,22 @@ largo_pie=70;
 
 explo=0; // 0 o 2
 tubo_seccionado=false; // true o false
+reduccion=3; // 2, 3 o 4
 
-radio_rueda_1 = pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = number_of_teeth_1);
-radio_rueda_2 = pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = number_of_teeth_2);
+function radio_rueda(dientes) =
+  pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = dientes);
+  
+radio_rueda_ppal = radio_rueda(number_of_teeth_ppal);
+radio_rueda_secundaria = radio_rueda(number_of_teeth_ppal/reduccion);
 
-module base() {
+distancia_ruedas = radio_rueda_ppal + radio_rueda_secundaria;
+distancia_ruedas_max = radio_rueda_ppal + radio_rueda(number_of_teeth_ppal/2);
+
+radio_ruedas_secundarias = [ for (red=[2,3,4]) radio_rueda(number_of_teeth_ppal/red) ];
+  
+module rueda_base() {
     difference(){     
-        gear(mm_per_tooth=mm_per_tooth, number_of_teeth=number_of_teeth_1, thickness=e_rueda_1, hole_diameter=d_eje_acimutal+2, pressure_angle=20,  clearance=clearance, backlash=backlash );    
+        gear(mm_per_tooth=mm_per_tooth, number_of_teeth=number_of_teeth_ppal, thickness=e_rueda_1, hole_diameter=d_eje_acimutal+2, pressure_angle=20,  clearance=clearance, backlash=backlash );    
       // muesquitas
     for(a=[0:120:359])
       rotate(a) 
@@ -84,11 +92,16 @@ module manija_pie(){
   }
 }
   
-module rueda_2(){
+module rueda_secundaria(){
   difference(){
     union(){
-      cylinder(d=20,h=7.5);
-      gear(mm_per_tooth=mm_per_tooth, number_of_teeth=number_of_teeth_2, thickness=e_rueda_2, pressure_angle=20, clearance=clearance, backlash=backlash);
+     cylinder(d=20,h=7.5);
+     gear(mm_per_tooth=mm_per_tooth, 
+          number_of_teeth=number_of_teeth_ppal/reduccion,
+          thickness=e_rueda_2, 
+          pressure_angle=20, 
+          clearance=clearance, 
+          backlash=backlash);
     }
    rotate(90)
     // OJO: "5" y "3" son JUSTOS
@@ -311,14 +324,9 @@ module base_sup(){
           cylinder(h=alto,d=10);
         }
       }
-//      hull() {
-//        translate([0,radio_rueda_1+radio_rueda_2-8,0])
-//          cylinder(h=alto,d=48);
-//        cylinder(h=alto,d=48);
-//    }
        for(y=[35/2,-35/2])      
          hull(){
-          translate([-(radio_rueda_1+radio_rueda_2-4),
+          translate([-distancia_ruedas_max+6,
                      y,0])
             cylinder(d=12,h=alto);
           translate([0,y,0])
@@ -353,21 +361,16 @@ module base_sup(){
         translate([x,y,0])
           cylinder(d=tor2,h=6*alto,center=true);
     // alitas del stepper
-    for(y=[35/2,-35/2])      
+    for(y=[35/2,-35/2]) 
+      for (x=radio_ruedas_secundarias)
       hull(){
-        translate([-(radio_rueda_1+radio_rueda_2-8+1.5),
+        translate([-(radio_rueda_ppal+x-8+1.5),
         y,0])
           cylinder(d=tor2,h=3*alto,center=true);
-        translate([-(radio_rueda_1+radio_rueda_2-8-1.5),
+        translate([-(radio_rueda_ppal+x-8-1.5),
         y,0])
-          cylinder(d=tor2,h=3*alto,center=true);
+          cylinder(d=tor2,h=3*alto,center=true);      
       }
-    // eje del stepper
-    translate([-(radio_rueda_1+radio_rueda_2),0,0])
-       cylinder(d=26,h=3*alto,center=true);
-    // más del eje del stepper
-//   translate([-30,radio_rueda_1+radio_rueda_2,-5])
-//      cube([60,30,3*alto]);
     // agujero central
     cylinder(h=a_eje_acimutal*3,d=d_eje_acimutal-10, center=true);
   }
@@ -439,24 +442,25 @@ translate([0,-48.5-17*explo,0])
   
 rotate(90)
   translate([0,
-             radio_rueda_1+radio_rueda_2-8+10*explo,
+             distancia_ruedas -8+10*explo,
              -20])
     rotate([0,180,0])
        stepper_28BYJ_48();
 
 color("sienna",0.9)
 rotate(90)
-  translate([0,(radio_rueda_1+radio_rueda_2+10*explo),
-              -45-e_rueda_2/2-1-20*explo])
-     rotate((number_of_teeth_2 % 2) == 1 ? 180/  number_of_teeth_2 : 0)
-      rueda_2();
+  translate([0,
+            distancia_ruedas +10*explo,
+            -45-e_rueda_2/2-1-20*explo])
+     rotate(180/(number_of_teeth_ppal/reduccion))
+      rueda_secundaria();
 
 translate([0,0,-45-10*explo])
   color("navajowhite") base_sup();
 
 color("teal",0.9)
   translate([0,0,-45.1-e_rueda_1/2-20*explo])
-    base();
+    rueda_base();
     
 color("teal",0.9)
  translate([0,0,-95.2-1-35*explo])
