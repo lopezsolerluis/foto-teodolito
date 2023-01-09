@@ -399,7 +399,7 @@ translate([0,0,-20.8]){
   color("pink") translate([lado,lado,lado-6]/2) rotate([0,-90,0]) eje(lado,1.5);
   color("pink") translate([-lado,-lado,lado-6]/2) rotate([0,-90,180]) eje(12,1.5);  
   }
-color ("green") translate([0,-39-25*explo,0]/2) rotate([90,0,0]) eje_aux();  
+color ("mediumslateblue") translate([0,-39-25*explo,0]/2) rotate([90,0,0]) eje_aux();  
 translate([12+7*explo,-24.5-12.5*explo,37.0])
   metric_bolt(size=3, l=15, details=false, pitch=0,
               orient=ORIENT_X);
@@ -418,7 +418,7 @@ color("deepskyblue",.9){
   translate([0,27.0+15*explo,0])
     pilar(false);
 }
-color("blue",.8){
+color("red",.8){
   translate([6.5+7*explo,-70-30*explo,-5.3])
     abrazadera_servo(false);
   translate([-6.5-7*explo,-70-30*explo,-5.3])
@@ -466,7 +466,7 @@ color("teal",0.9)
  translate([0,0,-95.2-1-35*explo])
    pie();
 
-color("mediumslateblue",0.8)
+color("green",0.8)
   for(a=[0:120:359])
      rotate(a) 
         translate([largo_pie,0,-105-55*explo])
