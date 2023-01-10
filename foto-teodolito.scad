@@ -11,7 +11,7 @@ use <BOSL/metric_screws.scad>
 explo=0; // 0 o 2
 tubo_seccionado=false; // true o false
 reduccion=2; // 2, 3 o 4
-con_tornillo=false;
+con_tornillos=true;
 
 tolj=.4;
 lado=18;
@@ -413,10 +413,12 @@ translate([0,0,-20.8]){
   color("pink") translate([-lado,-lado,lado-6]/2) rotate([0,-90,180]) eje(12,1.5);  
   }
 color ("mediumslateblue") translate([0,-39-25*explo,0]/2) rotate([90,0,0]) eje_aux();  
-  if(con_tornillo)
-    translate([12+7*explo,-24.5-12.5*explo,37.0])
-      metric_bolt(size=3, l=15, 
+  if(con_tornillos)
+    translate([15.3+7*explo,-24.5-12.5*explo,37.4])
+      metric_bolt(headtype="round",
+                  size=3,l=19.05, 
                   details=false, pitch=0,
+                  phillips="#2",
                   orient=ORIENT_X);
 translate([.35-.65,-24.5-20*explo,37.4])
   color("lightgrey") 
@@ -441,7 +443,7 @@ color("red",.8){
       abrazadera_servo(true);
 }
 
-translate([100,-78/2-5.5,-40])
+translate([100,-78/2-5.5,-37.6])
   rotate([0,0,90])
     robotbit();
 translate([11.8/2,-80-30*explo,6])
@@ -483,7 +485,7 @@ color("green",0.8)
         translate([largo_pie,0,-105-55*explo])
           manija_pie();
 
-if (con_tornillo)
+if (con_tornillos) {
   for(a=[0:120:359])
     rotate(a) 
       translate([largo_pie,0,-105-55*explo])
@@ -492,12 +494,33 @@ if (con_tornillo)
                     details=false, 
                     pitch=0, phillips="#2",
                     orient=ORIENT_ZNEG);
-//  translate([(largo_pie_pilar+50)/4,27+13,-40+base_pilar])  
-//        metric_bolt(headtype="round", 
-//                    size=3, l=15.875,  
-//                    details=false, 
-//                    pitch=0, phillips="#2",
-//                    orient=ORIENT_Z);
+  for(x=[31.25,-31.25])
+      for(y=[27,-37.55]) 
+    translate([x,y,-40+base_pilar])  
+        metric_bolt(headtype="round", 
+                    size=3, l=15.875,  
+                    details=false, 
+                    pitch=0, phillips="#2",
+                    orient=ORIENT_Z);
+  for(x=[48,95])
+      for(y=[30.5,-41.5])    
+    translate([x,y,-40-3.2+base_pilar])  
+        metric_bolt(headtype="round", 
+                    size=3, l=12.7,  
+                    details=false, 
+                    pitch=0, phillips="#2",
+                    orient=ORIENT_Z);
+  for(s=[-1,1])
+    translate([-distancia_ruedas+8,
+               35/2*s,
+              -40-7.7+base_pilar])  
+          metric_bolt(headtype="round", 
+                      size=3, l=8,  
+                      details=false, 
+                      pitch=0, phillips="#2",
+                      orient=ORIENT_Z);
+}
+
 //  translate([(largo_pie_pilar+50)/4,27+13,-40.2+base_pilar-alto_base*2-.2+2+.5])  
 //      cube([8,8,h_tuer],center=true);
 //  
