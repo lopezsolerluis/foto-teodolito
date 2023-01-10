@@ -11,7 +11,7 @@ use <BOSL/metric_screws.scad>
 explo=0; // 0 o 2
 tubo_seccionado=false; // true o false
 reduccion=2; // 2, 3 o 4
-con_tornillos=true;
+con_tornillos=false;
 
 tolj=.4;
 lado=18;
@@ -177,7 +177,7 @@ module pilar(servo) {
         cube([50,ancho,alto3]);
     }
     rotate([90,0,0])
-      cylinder(h=30,d=lado+1,center=true);
+      cylinder(h=30,d=lado+.5,center=true);
   }
   // pie
   largo_pie_pilar=75;
@@ -186,26 +186,21 @@ module pilar(servo) {
       cube([largo_pie_pilar,ancho,alto3]);
     for(s=[-1,1])
       translate([(largo_pie_pilar+50)/4*s,0,alto2])
-        cylinder(h=3*alto3,d=5,center=true);
+        cylinder(h=3*alto3,d=3.7,center=true);
   }
   // soporte servo
   if (servo) {
     difference(){
       for (z=[(lado+10+3.4)/2+1,-26.2-1]){
-        translate([0,(-34-13+ancho)/2,z])
-          cube([5,34+13,10],center=true);
+        translate([0,(-34-11+ancho)/2,z])
+          cube([5,34+11,10],center=true);
         translate([0,(-34+ancho)/2,z])
           cube([10,34,10],center=true);
       }
-      for (z=[(lado+10+3.4)/2+1,-26.2-1])
-        hull() {
-          translate([0,-31,z])
+      for (z=[(lado+10+3.4)/2+1,-26.2-1])        
+          translate([0,-32.5,z])
             rotate([0,90,0])
-              cylinder(h=30,d=4.5,center=true);
-          translate([0,-34,z])
-            rotate([0,90,0])
-              cylinder(h=30,d=4.5,center=true);
-        }
+              cylinder(h=30,d=3.7,center=true);
     }
   }
 }
