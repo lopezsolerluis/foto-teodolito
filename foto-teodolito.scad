@@ -11,7 +11,7 @@ use <BOSL/metric_screws.scad>
 explo=0; // 0 o 2
 tubo_seccionado=false; // true o false
 reduccion=2; // 2, 3 o 4
-con_tornillos=false;
+con_tornillos=true;
 
 tolj=.4;
 lado=18;
@@ -25,7 +25,7 @@ d_eje_acimutal=50;
 a_eje_acimutal=50;
 largo_pie=70;
 alto_base=.28*29;
-base_pilar=.28*31;
+base_pilar=.28*41;
 largo_pie_pilar=75;
 d_tor=2.5;
 a_tuer=9;
@@ -179,8 +179,7 @@ module pilar(servo) {
     rotate([90,0,0])
       cylinder(h=30,d=lado+.5,center=true);
   }
-  // pie
-  largo_pie_pilar=75;
+  // pie  
   difference(){
     translate([-largo_pie_pilar/2,-ancho/2,alto2])
       cube([largo_pie_pilar,ancho,alto3]);
@@ -347,12 +346,15 @@ module base_sup(){
     }
     // agujeros para tornillos    
     // pilares
-    for(x=[31.25,-31.25])
+    #for(x=[31.25,-31.25])
       for(y=[27,-37.55]) {
+        hull(){
+          for(delta=[-1,1])
+            translate([x,y+.8*delta,0])
+              cylinder(d=d_tor,h=3*alto_base,center=true);
+        }
         translate([x,y,0])
-          cylinder(d=d_tor,h=3*alto_base,center=true);
-        translate([x,y,0])
-          cube([a_tuer,a_tuer,4.4*2],center=true);
+          cube([a_tuer,a_tuer+.8*2,3.1*2],center=true);
       }
     // microbit
     for(x=[48,95])
@@ -462,7 +464,7 @@ rotate(90)
      rotate(180/(number_of_teeth_ppal/reduccion))
       rueda_secundaria();
 
-translate([0,0,-40-alto_base-.1-10*explo])
+!translate([0,0,-40-alto_base-.1-10*explo])
   color("navajowhite") base_sup();
 
 color("teal",0.9)
@@ -497,14 +499,14 @@ if (con_tornillos) {
                     orient=ORIENT_Z);
       translate([x,27+15*explo,-40+base_pilar+explo*10])  
         metric_bolt(headtype="round", 
-                    size=3, l=15.875,  
+                    size=3, l=19.05,  
                     details=false, 
                     pitch=0, phillips="#2",
                     orient=ORIENT_Z);
   }
   for(x=[48,95])
       for(y=[30.5,-41.5])    
-    translate([x,y,-40-3.2+base_pilar+explo*10])  
+    translate([x,y,-40+5.5+explo*10])  
         metric_bolt(headtype="round", 
                     size=3, l=12.7,  
                     details=false, 
@@ -513,7 +515,7 @@ if (con_tornillos) {
   for(s=[-1,1])
     translate([-distancia_ruedas+8-explo*10,
                35/2*s,
-              -40-7.7+base_pilar+explo*8])  
+              -40-7.1+alto_base+explo*8])  
           metric_bolt(headtype="round", 
                       size=3, l=8,  
                       details=false, 
