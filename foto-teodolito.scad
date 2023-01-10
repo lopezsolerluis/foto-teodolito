@@ -393,10 +393,6 @@ module base_sup(){
   }
 }
 
-
-//porta_BH1750();
-//translate([-7,-7,5]) BH1750();
-
 rotate([0,-30,0]) {
 translate([0,0,-20.8]){
   color("#111111") 
@@ -445,7 +441,6 @@ color("red",.8){
       abrazadera_servo(true);
 }
 
-////color("white") translate([0,0,100]) ldr();
 translate([100,-78/2-5.5,-40])
   rotate([0,0,90])
     robotbit();
@@ -458,7 +453,7 @@ translate([0,-48.5-17*explo,0])
       garra_servo(lado);  
 rotate(90)
   translate([0,
-             distancia_ruedas -8+10*explo,
+             distancia_ruedas-8+10*explo,
              -21])
     rotate([0,180,0])
        stepper_28BYJ_48();
