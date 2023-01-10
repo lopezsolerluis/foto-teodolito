@@ -224,8 +224,7 @@ module abrazadera_servo(tuerca){
     if (tuerca) 
       for (s=[-1,1])
         translate([2.5+1,0,s*(54/2-5)])
-          rotate([0,90,0])
-            cylinder(h=3,d=7.1,center=true,$fn=6);    
+          cube([5,8,8],center=true);
   }
 }
 
@@ -494,31 +493,46 @@ if (con_tornillos) {
                     details=false, 
                     pitch=0, phillips="#2",
                     orient=ORIENT_ZNEG);
-  for(x=[31.25,-31.25])
-      for(y=[27,-37.55]) 
-    translate([x,y,-40+base_pilar])  
+  for(x=[31.25,-31.25]) {      
+    translate([x,-37.55-30*explo,-40+base_pilar+explo*10])  
         metric_bolt(headtype="round", 
                     size=3, l=15.875,  
                     details=false, 
                     pitch=0, phillips="#2",
                     orient=ORIENT_Z);
+      translate([x,27+15*explo,-40+base_pilar+explo*10])  
+        metric_bolt(headtype="round", 
+                    size=3, l=15.875,  
+                    details=false, 
+                    pitch=0, phillips="#2",
+                    orient=ORIENT_Z);
+  }
   for(x=[48,95])
       for(y=[30.5,-41.5])    
-    translate([x,y,-40-3.2+base_pilar])  
+    translate([x,y,-40-3.2+base_pilar+explo*10])  
         metric_bolt(headtype="round", 
                     size=3, l=12.7,  
                     details=false, 
                     pitch=0, phillips="#2",
                     orient=ORIENT_Z);
   for(s=[-1,1])
-    translate([-distancia_ruedas+8,
+    translate([-distancia_ruedas+8-explo*10,
                35/2*s,
-              -40-7.7+base_pilar])  
+              -40-7.7+base_pilar+explo*8])  
           metric_bolt(headtype="round", 
                       size=3, l=8,  
                       details=false, 
                       pitch=0, phillips="#2",
                       orient=ORIENT_Z);
+  for(z=[16.5,-27.5])
+    translate([10.5+explo*25,
+               -70-30*explo,
+              z])  
+          metric_bolt(headtype="round", 
+                      size=3, l=22.2,  
+                      details=false, 
+                      pitch=0, phillips="#2",
+                      orient=ORIENT_X);
 }
 
 //  translate([(largo_pie_pilar+50)/4,27+13,-40.2+base_pilar-alto_base*2-.2+2+.5])  
