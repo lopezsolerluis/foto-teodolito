@@ -295,7 +295,7 @@ module eje_aux(){
       linear_extrude_bezier(bez, N=2, height=ancho2, splinesteps=32, convexity=5);
     }    
     // hueco
-    cylinder(h=ancho1+12,d=12+.3,center=true);
+    cylinder(h=ancho1+12,d=12+.5,center=true);
     // tuerca
     translate([-.7-.65,lado*2.3-8.5,-ancho2])
       cube([2.1,9,ancho2*3]);
