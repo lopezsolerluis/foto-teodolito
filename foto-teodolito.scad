@@ -287,7 +287,7 @@ module eje_aux(){
   difference(){
     union(){
       cylinder(h=ancho1,d=lado);      
-      translate([-lado/2+6,0,0])
+      translate([-lado/2+6-.8,0,0])
         cube([e,46,ancho2]);                
       // elástico      
       bez = [ [0,0],[-4,10],[-4,40],[-6,43],[-8,40],[-8,10],[-4,0],[-3,-3] ];
@@ -296,10 +296,10 @@ module eje_aux(){
       linear_extrude_bezier(bez, N=2, height=ancho2, splinesteps=32, convexity=5);
     }    
     // hueco
-    cylinder(h=ancho1+12,d=12+.5,center=true);
+    cylinder(h=ancho1+12,d=12+.3,center=true);
     // tuerca
-    translate([-.65,lado*2.3-8.5,-ancho2])
-      cube([2.5,9,ancho2*3]);
+    translate([-.7-.65,lado*2.3-8.5,-ancho2])
+      cube([2.1,9,ancho2*3]);
     // tornillo
     translate([-5,lado*2.3-8.5/2+.25,ancho2/2])
       rotate([0,90,0])
@@ -308,10 +308,10 @@ module eje_aux(){
     translate([0,0,ancho1-3])
       rotate(90)
         hull(){
-        cylinder(h=6,d=7.7);
+        cylinder(h=6,d=6.9);
         for(s=[-1,1])
-          translate([14*s,0,0])
-            cylinder(h=6,d=4.7);
+          translate([9*s,0,0])
+            cylinder(h=6,d=4.6);
        }
   }
 }
@@ -422,10 +422,10 @@ color ("mediumslateblue") translate([0,-39-25*explo,0]/2) rotate([90,0,0]) eje_a
       metric_bolt(size=3, l=15, 
                   details=false, pitch=0,
                   orient=ORIENT_X);
-translate([.6,-24.5-20*explo,37.4])
+translate([.35-.65,-24.5-20*explo,37.4])
   color("lightgrey") 
     difference(){
-      cube([2,8.5,8.5],center=true);
+      cube([1.8,8.5,8.5],center=true);
       rotate([0,90,0])
         cylinder(h=5,d=3,center=true);
     }
