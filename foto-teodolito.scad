@@ -496,7 +496,7 @@ rotate(90)
      rotate(180/(number_of_teeth_ppal/reduccion))
       rueda_secundaria();
 
-!translate([0,0,-40-alto_base-.1-10*explo])
+translate([0,0,-40-alto_base-.1-10*explo])
   color("navajowhite") base_sup();
 
 color("teal",0.9)
