@@ -346,15 +346,19 @@ module base_sup(){
     }
     // agujeros para tornillos    
     // pilares
-    #for(x=[31.25,-31.25])
+    for(x=[31.25,-31.25])
       for(y=[27,-37.55]) {
         hull(){
           for(delta=[-1,1])
-            translate([x,y+.8*delta,0])
+            translate([x,
+                       y + (y>0 ? .8*delta : 0),
+                       0])
               cylinder(d=d_tor,h=3*alto_base,center=true);
         }
         translate([x,y,0])
-          cube([a_tuer,a_tuer+.8*2,3.1*2],center=true);
+          cube([a_tuer,
+                a_tuer + (y>0 ? .8*2 : 0) ,
+                3.1*2],center=true);
       }
     // microbit
     for(x=[48,95])
@@ -464,7 +468,7 @@ rotate(90)
      rotate(180/(number_of_teeth_ppal/reduccion))
       rueda_secundaria();
 
-translate([0,0,-40-alto_base-.1-10*explo])
+!translate([0,0,-40-alto_base-.1-10*explo])
   color("navajowhite") base_sup();
 
 color("teal",0.9)
@@ -549,5 +553,5 @@ module prueba_base(altura){
     }
 }
 
- prueba_base(alto_base);
-! prueba_base(10);
+// prueba_base(alto_base);
+// prueba_base(10);
