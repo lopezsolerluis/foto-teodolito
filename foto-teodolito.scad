@@ -309,7 +309,16 @@ module eje_aux(){
   }
 }
 
+module bisel(radio,alto) {
+  difference(){
+    cube([radio,radio,alto]);
+    translate([radio,radio,0])
+      cylinder(r=radio,h=3*alto,center=true);
+  }
+}
+
 module base_sup(){  
+  r_bisel=8;
   difference() {
     union(){
       hull(){        
@@ -343,6 +352,25 @@ module base_sup(){
       // eje acimutal
       translate([0,0,-a_eje_acimutal])
         cylinder(h=a_eje_acimutal,d=d_eje_acimutal-.8);
+      // biseles
+      translate([-41,24.5,0])
+        rotate(90)
+          bisel(r_bisel,alto_base);
+      translate([-41,-10.5,0])
+        rotate(90)
+          bisel(r_bisel,alto_base);
+      translate([-41,10.5,0])
+        rotate(180)
+          bisel(r_bisel,alto_base);
+      translate([-41,-24.5,0])
+        rotate(180)
+          bisel(r_bisel,alto_base);
+      translate([41,23,0])
+        rotate(270)
+          bisel(r_bisel,alto_base);
+      translate([41,-34,0])
+        rotate(0)
+          bisel(r_bisel,alto_base);
     }
     // agujeros para tornillos    
     // pilares
