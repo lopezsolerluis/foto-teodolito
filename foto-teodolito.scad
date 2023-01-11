@@ -27,7 +27,7 @@ largo_pie=70;
 alto_base=.28*29;
 base_pilar=.28*41;
 largo_pie_pilar=75;
-d_tor=2.5;
+d_tor=3.5;
 a_tuer=9;
 h_tuer=2.4;
 echo(alto_base, base_pilar);
@@ -464,7 +464,7 @@ rotate(90)
      rotate(180/(number_of_teeth_ppal/reduccion))
       rueda_secundaria();
 
-!translate([0,0,-40-alto_base-.1-10*explo])
+translate([0,0,-40-alto_base-.1-10*explo])
   color("navajowhite") base_sup();
 
 color("teal",0.9)
@@ -535,3 +535,19 @@ if (con_tornillos) {
 //  translate([(largo_pie_pilar+50)/4,27+13,-40.2+base_pilar-alto_base*2-.2+2+.5])  
 //      cube([8,8,h_tuer],center=true);
 //  
+
+module prueba_base(altura){
+  difference(){
+    cube([40,15,altura]);
+    let(x=[ for(x=[7.5:a_tuer*1.39:40]) x ],
+        prof=[3.1,2.8,2.5])
+      #for(i=[0:2]) 
+      translate([x[i],7.5,0]) {
+        cylinder(d=d_tor,h=30,center=true);      
+        cube([a_tuer,a_tuer,prof[i]*2],center=true);
+      }      
+    }
+}
+
+ prueba_base(alto_base);
+! prueba_base(10);
