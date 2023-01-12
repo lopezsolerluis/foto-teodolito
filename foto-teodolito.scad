@@ -27,7 +27,7 @@ largo_pie=70;
 alto_base=.28*33;
 base_pilar=.28*41;
 largo_pie_pilar=75;
-d_tor=3.5;
+d_tor=3.6;
 a_tuer=9;
 h_tuer=2.4;
 echo(alto_base, base_pilar);
@@ -349,7 +349,7 @@ module base_sup(){
       }  
       // eje acimutal
       translate([0,0,-a_eje_acimutal])
-        cylinder(h=a_eje_acimutal,d=d_eje_acimutal-.8);
+        cylinder(h=a_eje_acimutal,d=d_eje_acimutal);
       // biseles
       translate([-41,24.5,0])
         rotate(90)
@@ -416,7 +416,8 @@ module base_sup(){
         } 
       }
     // agujero central
-    cylinder(h=a_eje_acimutal*3,d=d_eje_acimutal-10, center=true);
+    cylinder(h=a_eje_acimutal*3,
+             d=d_eje_acimutal-2*7, center=true);
   }
 }
 
