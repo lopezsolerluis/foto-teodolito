@@ -206,12 +206,12 @@ module abrazadera_servo(tuerca){
     cube([8,10,54],center=true);
     // hueco central
     translate([-4.5+.2,0,0])
-      cube([8,20,34],center=true);
-    // tornillo
-    for (s=[-1,1])
+      cube([7.4,20,34],center=true);
+    // tornillos    
+    for(s=[-1,1])
       translate([0,0,s*(54/2-5)])
         rotate([0,90,0])
-          cylinder(h=30,d=4.5,center=true);
+          cylinder(h=20,d=4,center=true);    
     // tuerca
     if (tuerca) 
       for (s=[-1,1])
@@ -441,8 +441,8 @@ translate([0,0,-20.8]){
   color("pink") translate([-lado,-lado,lado-6]/2) rotate([0,-90,180]) eje(12,1.5);  
   }
 color ("mediumslateblue") translate([0,-39-25*explo,0]/2) rotate([90,0,0]) eje_aux();  
-  if(con_tornillos)
-    translate([15.3+7*explo,-24.5-12.5*explo,37.4])
+if(con_tornillos)
+  translate([15.3+7*explo,-24.5-12.5*explo,37.4])
       metric_bolt(headtype="round",
                   size=3,l=19.05, 
                   details=false, pitch=0,
