@@ -24,7 +24,7 @@ e_rueda_2 = 9;
 d_eje_acimutal=50;
 a_eje_acimutal=50;
 largo_pie=70;
-alto_base=.28*29;
+alto_base=.28*33;
 base_pilar=.28*41;
 largo_pie_pilar=75;
 d_tor=3.5;
@@ -100,19 +100,17 @@ module manija_pie(){
   }
 }
   
-module rueda_secundaria(){
-  translate([0,0,-3.1])
+module rueda_secundaria(){  
   difference(){
     union(){
-     cylinder(d=17,h=10.5);
+     cylinder(d=17,h=11.2);
      gear(mm_per_tooth=mm_per_tooth, 
-          number_of_teeth=number_of_teeth_ppal/reduccion,
+          number_of_teeth = number_of_teeth_ppal /reduccion,
           thickness=e_rueda_2, 
           pressure_angle=20, 
           clearance=clearance, 
           backlash=backlash);
-    }
-   rotate(90)
+    }   
     // OJO: "5" y "3" son JUSTOS
      cube([5,3,40],center=true);
   }
@@ -374,6 +372,7 @@ module base_sup(){
     }
     // agujeros para tornillos    
     // pilares
+    prof_tuer=4.2; // 15*0.28
     for(x=[31.25,-31.25])
       for(y=[27,-37.55]) {
         hull(){
@@ -386,7 +385,7 @@ module base_sup(){
         translate([x,y,0])
           cube([a_tuer,
                 a_tuer + (y>0 ? .8*2 : 0) ,
-                3.1*2],center=true);
+                prof_tuer*2],center=true);
       }
     // microbit
     for(x=[48,95])
@@ -394,7 +393,7 @@ module base_sup(){
         translate([x,y,0])
           cylinder(d=d_tor,h=6*alto_base,center=true);
         translate([x,y,0])
-          cube([a_tuer,a_tuer,3.1*2],center=true);
+          cube([a_tuer,a_tuer,prof_tuer*2],center=true);
       }
     // alitas del stepper
     for(y=[35/2,-35/2]) 
@@ -410,10 +409,10 @@ module base_sup(){
         hull(){
           translate([-(radio_rueda_ppal+x-8+1.5),
           y,0])
-          cube([a_tuer,8.5,3.1*2],center=true);           
+          cube([a_tuer,8.5,prof_tuer*2],center=true);           
           translate([-(radio_rueda_ppal+x-8-1.5),
           y,0])
-            cube([a_tuer,8.5,3.1*2],center=true);
+            cube([a_tuer,8.5,prof_tuer*2],center=true);
         } 
       }
     // agujero central
@@ -471,7 +470,7 @@ color("red",.8){
       abrazadera_servo(true);
 }
 
-translate([100,-78/2-5.5,-37.6])
+translate([100,-78/2-5.5,-36])
   rotate([0,0,90])
     robotbit();
 translate([11.8/2,-80-30*explo,6])
@@ -492,7 +491,7 @@ color("sienna",0.9)
 rotate(90)
   translate([0,
             distancia_ruedas +10*explo,
-            -46-e_rueda_2/2-1-20*explo])
+            -40-alto_base-e_rueda_1/2-20*explo])
      rotate(180/(number_of_teeth_ppal/reduccion))
       rueda_secundaria();
 
@@ -513,6 +512,7 @@ color("green",0.8)
         translate([largo_pie,0,-105-55*explo])
           manija_pie();
 
+//translate([0,20,0])
 if (con_tornillos) {
   for(a=[0:120:359])
     rotate(a) 
@@ -523,33 +523,37 @@ if (con_tornillos) {
                     pitch=0, phillips="#2",
                     orient=ORIENT_ZNEG);
   for(x=[31.25,-31.25]) {      
-    translate([x,-37.55-30*explo,-40+base_pilar+explo*10])  
+    translate([x,
+              -37.55-30*explo,
+              -40+base_pilar+explo*10])  
         metric_bolt(headtype="round", 
-                    size=3, l=15.875,  
+                    size=3, l=20.3,  
                     details=false, 
                     pitch=0, phillips="#2",
                     orient=ORIENT_Z);
-      translate([x,27+15*explo,-40+base_pilar+explo*10])  
+    translate([x,
+               27+15*explo,
+              -40+base_pilar+explo*10])  
         metric_bolt(headtype="round", 
-                    size=3, l=19.05,  
+                    size=3, l=20.3,  
                     details=false, 
                     pitch=0, phillips="#2",
                     orient=ORIENT_Z);
   }
   for(x=[48,95])
       for(y=[30.5,-41.5])    
-    translate([x,y,-40+5.5+explo*10])  
+    translate([x,y,-40+7.1+explo*10])  
         metric_bolt(headtype="round", 
-                    size=3, l=12.7,  
+                    size=3, l=15.87,  
                     details=false, 
                     pitch=0, phillips="#2",
                     orient=ORIENT_Z);
   for(s=[-1,1])
     translate([-distancia_ruedas+8-explo*10,
                35/2*s,
-              -40-7.1+alto_base+explo*8])  
+              -40-8.2+alto_base+explo*8])  
           metric_bolt(headtype="round", 
-                      size=3, l=8,  
+                      size=3, l=9.5,  
                       details=false, 
                       pitch=0, phillips="#2",
                       orient=ORIENT_Z);
