@@ -277,9 +277,16 @@ module eje_aux(){
   e=7;
   difference(){
     union(){
-      cylinder(h=ancho1,d=lado);      
-      translate([-lado/2+6-.8,0,0])
-        cube([e,46,ancho2]);                
+      cylinder(h=ancho1,d=lado);
+      hull(){
+        translate([-lado/2+6-.8,0,0])
+          cube([e,46,ancho2]);                
+        difference(){
+          cylinder(h=ancho2,d=lado);
+          translate([-lado,-lado,-1]) 
+            cube([lado,2*lado,2*ancho2]);
+        }
+      }
       // elástico      
       bez = [ [0,0],[-4,10],[-4,40],[-6,43],[-8,40],[-8,10],[-4,0],[-3,-3] ];
       translate([-5,5,0])
@@ -296,14 +303,16 @@ module eje_aux(){
       rotate([0,90,0])
         cylinder(d=3.7,h=12);    
     // hueco garra servo
-    translate([0,0,ancho1-3])
+    translate([0,0,ancho1-3]) {
+     cylinder(h=6,d=6.9);
       rotate(90)
         hull(){
-        cylinder(h=6,d=6.9);
+        cylinder(h=6,d=(6.9+4.7)/2);
         for(s=[-1,1])
           translate([9*s,0,0])
             cylinder(h=6,d=4.6);
        }
+     }
   }
 }
 
