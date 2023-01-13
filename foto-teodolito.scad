@@ -10,7 +10,7 @@ use <BOSL/metric_screws.scad>
 
 explo=0; // 0 o 2
 tubo_seccionado=false; // true o false
-reduccion=2; // 2, 3 o 4
+reduccion=4; // 2, 3 o 4
 con_tornillos=true;
 
 tolj=.4;
@@ -19,6 +19,7 @@ mm_per_tooth = 5;
 number_of_teeth_ppal=72;
 clearance=0.5;
 backlash=0.1;
+pressure_angle=20;
 e_rueda_1 = 12;
 e_rueda_2 = 10;
 d_eje_acimutal=50;
@@ -51,7 +52,7 @@ module rueda_base() {
              number_of_teeth=number_of_teeth_ppal,
              thickness=e_rueda_1,
              hole_diameter=d_eje_acimutal+2,
-//             pressure_angle=20,
+             pressure_angle=pressure_angle,
 //             clearance=clearance,
              backlash=backlash
              );    
@@ -116,7 +117,7 @@ module rueda_secundaria(){
      gear(mm_per_tooth=mm_per_tooth, 
           number_of_teeth = number_of_teeth_ppal /reduccion,
           thickness=e_rueda_2,
-//          pressure_angle=20 
+          pressure_angle=pressure_angle,
 //          clearance=clearance, 
           backlash=backlash
       );
@@ -622,4 +623,4 @@ module prueba_base(altura){
 //  }
 //}
 //
-//rueda_2();
+//!rueda_2();
