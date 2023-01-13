@@ -10,7 +10,7 @@ use <BOSL/metric_screws.scad>
 
 explo=0; // 0 o 2
 tubo_seccionado=false; // true o false
-reduccion=4; // 2, 3 o 4
+reduccion=2; // 2, 3 o 4
 con_tornillos=true;
 
 tolj=.4;
@@ -609,18 +609,33 @@ module prueba_base(altura){
 // prueba_base(alto_base);
 // prueba_base(10);
 
-//module rueda_2 () {
-//  radio = outer_radius(mm_per_tooth=mm_per_tooth,
-//     number_of_teeth = number_of_teeth_ppal/reduccion);
-//  intersection(){
-//    translate([0,0,e_rueda_2/2])
-//      rueda_secundaria();
-//     union(){
-//      translate([0,0,5*.28])
-//        cylinder(h=50,d=100);      
-//      cylinder(h=5*.28*2,r=radio-.1,center=true);
-//     }
-//  }
-//}
-//
+module rueda_2 () {
+  e_rueda_2=e_rueda_2-5*.28;
+  radio = outer_radius(mm_per_tooth=mm_per_tooth,
+     number_of_teeth = number_of_teeth_ppal/reduccion);
+  intersection(){
+    union(){
+      difference(){
+        translate([0,0,e_rueda_2/2])
+          rueda_secundaria();
+        translate([0,0,-10])
+          cylinder(d=300,h=10);
+      }
+      translate([0,0,-5*.28/2])
+       gear(mm_per_tooth=mm_per_tooth, 
+           number_of_teeth = number_of_teeth_ppal /reduccion,
+           thickness=5*.28,
+           pressure_angle=pressure_angle,
+           clearance=.5, 
+            backlash=backlash+.4
+      );
+    }  
+     union(){      
+        cylinder(h=50,d=100);      
+    translate([0,0,-5*.28])
+      cylinder(h=5*.28*2,r=radio-.1,center=true);
+     }
+  }
+}
+
 //!rueda_2();
