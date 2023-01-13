@@ -18,9 +18,9 @@ lado=18;
 mm_per_tooth = 5;
 number_of_teeth_ppal=72;
 clearance=0.5;
-backlash=0.4;
+backlash=0.1;
 e_rueda_1 = 12;
-e_rueda_2 = 9;
+e_rueda_2 = 10;
 d_eje_acimutal=50;
 a_eje_acimutal=50;
 largo_pie=70;
@@ -42,10 +42,19 @@ distancia_ruedas = radio_rueda_ppal + radio_rueda_secundaria;
 distancia_ruedas_max = radio_rueda_ppal + radio_rueda(number_of_teeth_ppal/2);
 
 radio_ruedas_secundarias = [ for (red=[2,3,4]) radio_rueda(number_of_teeth_ppal/red) ];
-  
+
+echo(number_of_teeth_ppal/reduccion);
+
 module rueda_base() {
     difference(){     
-        gear(mm_per_tooth=mm_per_tooth, number_of_teeth=number_of_teeth_ppal, thickness=e_rueda_1, hole_diameter=d_eje_acimutal+2, pressure_angle=20,  clearance=clearance, backlash=backlash );    
+        gear(mm_per_tooth=mm_per_tooth,
+             number_of_teeth=number_of_teeth_ppal,
+             thickness=e_rueda_1,
+             hole_diameter=d_eje_acimutal+2,
+//             pressure_angle=20,
+//             clearance=clearance,
+             backlash=backlash
+             );    
       // muesquitas
     for(a=[0:120:359])
       rotate(a) 
@@ -103,13 +112,14 @@ module manija_pie(){
 module rueda_secundaria(){  
   difference(){
     union(){
-     cylinder(d=17,h=11.2);
+     cylinder(d=17,h=11.7);
      gear(mm_per_tooth=mm_per_tooth, 
           number_of_teeth = number_of_teeth_ppal /reduccion,
-          thickness=e_rueda_2, 
-          pressure_angle=20, 
-          clearance=clearance, 
-          backlash=backlash);
+          thickness=e_rueda_2,
+//          pressure_angle=20 
+//          clearance=clearance, 
+          backlash=backlash
+      );
     }   
     // OJO: "5" y "3" son JUSTOS
      cube([5,3,40],center=true);
@@ -472,7 +482,7 @@ color("deepskyblue",.9){
   translate([0,27.0+15*explo,0])
     pilar(false);
 }
-color("red",.8){
+color("blue",.8){
   translate([6.5+7*explo,-70-30*explo,-5.3])
     abrazadera_servo(false);
   translate([-6.5-7*explo,-70-30*explo,-5.3])
@@ -501,9 +511,9 @@ color("sienna",0.9)
 rotate(90)
   translate([0,
             distancia_ruedas +10*explo,
-            -40-alto_base-e_rueda_1/2-20*explo])
+            -40-.5-alto_base-e_rueda_1/2-20*explo])
      rotate(180/(number_of_teeth_ppal/reduccion))
-      rueda_secundaria();
+       rueda_secundaria();
 
 translate([0,0,-40-alto_base-.1-10*explo])
   color("navajowhite") base_sup();
@@ -597,3 +607,19 @@ module prueba_base(altura){
 
 // prueba_base(alto_base);
 // prueba_base(10);
+
+//module rueda_2 () {
+//  radio = outer_radius(mm_per_tooth=mm_per_tooth,
+//     number_of_teeth = number_of_teeth_ppal/reduccion);
+//  intersection(){
+//    translate([0,0,e_rueda_2/2])
+//      rueda_secundaria();
+//     union(){
+//      translate([0,0,5*.28])
+//        cylinder(h=50,d=100);      
+//      cylinder(h=5*.28*2,r=radio-.1,center=true);
+//     }
+//  }
+//}
+//
+//rueda_2();
