@@ -616,7 +616,7 @@ module rueda_2 () {
   intersection(){
     union(){
       difference(){
-        translate([0,0,e_rueda_2/2])
+        translate([0,0,(e_rueda_2-5*.28)/2])
           rueda_secundaria();
         translate([0,0,-10])
           cylinder(d=300,h=10);
