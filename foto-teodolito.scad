@@ -20,7 +20,7 @@ number_of_teeth_ppal=72;
 clearance=0.5;
 backlash=0.1;
 pressure_angle=20;
-e_rueda_1 = 12;
+e_rueda_1 = 45*.28;
 e_rueda_2 = 10;
 d_eje_acimutal=50;
 a_eje_acimutal=50;
@@ -51,7 +51,7 @@ module rueda_base() {
         gear(mm_per_tooth=mm_per_tooth,
              number_of_teeth=number_of_teeth_ppal,
              thickness=e_rueda_1,
-             hole_diameter=d_eje_acimutal+2,
+             hole_diameter=d_eje_acimutal+1,
              pressure_angle=pressure_angle,
 //             clearance=clearance,
              backlash=backlash
@@ -59,9 +59,8 @@ module rueda_base() {
       // muesquitas
     for(a=[0:120:359])
       rotate(a) 
-        translate([(d_eje_acimutal+12)/2+0,0,
-                    -e_rueda_1/2-.1])
-          cylinder(h=6.9,d=6.8);
+        translate([(d_eje_acimutal+12)/2+0,0,0])
+          cylinder(h=3*e_rueda_1,d=7,center=true);
       }      
 }
 
@@ -79,11 +78,11 @@ module pie(){
             translate([largo_pie,0,0])
               cylinder(h=25,d=20);
             }
-       // muesquitas
+       // pernitos
        for(a=[0:120:359])
          rotate(a) 
-           translate([(d_eje_acimutal+12)/2,0,a_eje_acimutal-e_rueda_1+1])
-             cylinder(h=6,d=6);
+           translate([(d_eje_acimutal+12)/2,0,a_eje_acimutal-e_rueda_1+1+0])
+             cylinder(h=8,d1=6.9,d2=7.1);
         }      
     // hueco central
     cylinder(h=a_eje_acimutal*3, d=d_eje_acimutal, center=true);
@@ -512,7 +511,7 @@ color("sienna",0.9)
 rotate(90)
   translate([0,
             distancia_ruedas +10*explo,
-            -40-.5-alto_base-e_rueda_1/2-20*explo])
+            -40-1.5-alto_base-e_rueda_2/2-20*explo])
      rotate(180/(number_of_teeth_ppal/reduccion))
        rueda_secundaria();
 
@@ -521,10 +520,10 @@ translate([0,0,-40-alto_base-.1-10*explo])
 
 color("teal",0.9)
   translate([0,0,-40-alto_base-.15-e_rueda_1/2-20*explo])
-    rueda_base();
+     rueda_base();
     
-color("teal",0.9)
-  translate([0,0,-(52.2+alto_base+a_eje_acimutal-e_rueda_1+1)-35*explo])
+//color("teal",0.9)
+  translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1+0.8)-35*explo])
    pie();
 
 color("green",0.8)
@@ -609,6 +608,7 @@ module prueba_base(altura){
 // prueba_base(alto_base);
 // prueba_base(10);
 
+// Módulos lamentablemente necesarios en razón de que mi impresora, por algún motivo que se me escapa, imprime las primeras 5 capas más anchas de lo debido.
 module rueda_2 () {
   e_rueda_2=e_rueda_2-5*.28;
   radio = outer_radius(mm_per_tooth=mm_per_tooth,
@@ -639,3 +639,35 @@ module rueda_2 () {
 }
 
 //!rueda_2();
+
+module rueda_1 () {
+  e_rueda_1=e_rueda_1-5*.28;
+  radio = outer_radius(mm_per_tooth=mm_per_tooth,
+     number_of_teeth = number_of_teeth_ppal);
+  intersection(){
+    union(){
+      difference(){
+        translate([0,0,(e_rueda_1-5*.28)/2])
+          rueda_base();
+        translate([0,0,-10])
+          cylinder(d=300,h=10);
+      }
+      translate([0,0,-5*.28/2])
+       gear(mm_per_tooth=mm_per_tooth, 
+           number_of_teeth = number_of_teeth_ppal,
+           thickness=5*.28,
+           pressure_angle=pressure_angle,
+           clearance=.55, 
+            backlash=backlash+.55,
+                  hole_diameter=d_eje_acimutal+1
+      );
+    }  
+     union(){      
+        cylinder(h=50,d=200);      
+    translate([0,0,-5*.28])
+      cylinder(h=5*.28*2,r=radio-.15,center=true);
+     }
+  }
+}
+
+//!translate([0,0,1.4]) rueda_1();
