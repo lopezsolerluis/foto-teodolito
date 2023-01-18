@@ -11,7 +11,7 @@ use <BOSL/metric_screws.scad>
 explo=0; // 0 o 2
 tubo_seccionado=false; // true o false
 reduccion=2; // 2, 3 o 4
-con_tornillos=true;
+con_tornillos=false;
 
 tolj=.4;
 lado=18;
@@ -392,18 +392,19 @@ module base_sup(){
     // agujeros para tornillos    
     // pilares
     prof_tuer=4.2; // 15*0.28
+    let (holgura=1.5)
     for(x=[31.25,-31.25])
-      for(y=[27,-37.55]) {
+      for(y=[26.65,-36.65]) {
         hull(){
-          for(delta=[-1,1])
+          for(s=[-1,1])
             translate([x,
-                       y + (y>0 ? .8*delta : 0),
+                       y + (y>0 ? s*holgura : 0),
                        0])
               cylinder(d=d_tor,h=3*alto_base,center=true);
         }
         translate([x,y,0])
           cube([a_tuer,
-                a_tuer + (y>0 ? .8*2 : 0) ,
+                a_tuer + (y>0 ? holgura*2 : 0) ,
                 prof_tuer*2],center=true);
       }
     // microbit
@@ -459,7 +460,7 @@ translate([0,0,-20.8]){
   color("pink") translate([lado,lado,lado-6]/2) rotate([0,-90,0]) eje(lado,1.5);
   color("pink") translate([-lado,-lado,lado-6]/2) rotate([0,-90,180]) eje(12,1.5);  
   }
-color ("mediumslateblue") translate([0,-39-25*explo,0]/2) rotate([90,0,0]) eje_aux();  
+color ("mediumslateblue") translate([0,-38.1-25*explo,0]/2) rotate([90,0,0]) eje_aux();  
 if(con_tornillos)
   translate([15.3+7*explo,-24.5-12.5*explo,37.4])
       metric_bolt(headtype="round",
@@ -477,15 +478,15 @@ translate([.35-.65,-24.5-20*explo,37.4])
 }
 
 color("deepskyblue",.9){
-  translate([0,-1.39*27-30*explo,0])
+  translate([0,-36.65-30*explo,0])
     pilar(true);
-  translate([0,27.0+15*explo,0])
+  translate([0,26.6+15*explo,0])
     pilar(false);
 }
 color("blue",.8){
-  translate([6.5+7*explo,-70-30*explo,-5.3])
+  translate([6.5+7*explo,-69.15-30*explo,-5.3])
     abrazadera_servo(false);
-  translate([-6.5-7*explo,-70-30*explo,-5.3])
+  translate([-6.5-7*explo,-69.15-30*explo,-5.3])
     rotate([0,180,0])
       abrazadera_servo(true);
 }
@@ -493,10 +494,10 @@ color("blue",.8){
 translate([100,-78/2-5.5,-36])
   rotate([0,0,90])
     robotbit();
-translate([11.8/2,-80-30*explo,6])
+translate([11.8/2,-79.9-30*explo,6])
   rotate([0,90,90])
     servo_s90g ();
-translate([0,-48.5-17*explo,0])
+translate([0,-48.1-17*explo,0])
   rotate([0,-20,0])
     rotate([0,90,-90])
       garra_servo(lado);  
