@@ -95,22 +95,26 @@ module pie(){
       for(a=[0:120:359])
           rotate(a) {
             translate([largo_pie-15,-1,-1])
-              cube([40,2,40]);
+              cube([40,1.5,40]);
             translate([largo_pie,0,0])
-              cylinder(h=60,d=7,center=true);
+              cylinder(h=60,d=6,center=true);
             }
     }
 }
 
 module manija_pie(){
-  d = 40;
+  d = 50;
   difference(){
     cylinder(h=10,d=d);
-    cylinder(h=20,d=6,center=true);
+    cylinder(h=30,d=6,center=true);
+    // muescas
+    cube([1.5,10,30],center=true);
+    cube([10,1.5,30],center=true);
+    // contorno
     for(a=[0:30:359])
       rotate(a)
         translate([d/1.8,0,0])
-          cylinder(h=30,d=9,center=true);
+          cylinder(h=30,d=10.5,center=true);
   }
 }
   
@@ -528,7 +532,7 @@ color("teal",0.9)
   translate([0,0,-40-alto_base-.15-e_rueda_1/2-20*explo])
      rueda_base();
 
-!color("teal",0.9)
+color("teal",0.9)
   translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1-.2+0)-35*explo])
      pie();
 
@@ -548,7 +552,7 @@ if (con_tornillos) {
          -40-alto_base-e_rueda_1-a_eje_acimutal-1
          -55*explo])
         metric_bolt(headtype="round", 
-                    size=6, l=44.3,  
+                    size=6.35, l=44.3,  
                     details=false, 
                     pitch=0, phillips="#2",
                     orient=ORIENT_ZNEG);
