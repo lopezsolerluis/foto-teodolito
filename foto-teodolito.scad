@@ -11,7 +11,7 @@ use <BOSL/metric_screws.scad>
 explo=0; // 0 o 2
 tubo_seccionado=false; // true o false
 reduccion=2; // 2, 3 o 4
-con_tornillos=false;
+con_tornillos=true;
 
 tolj=.4;
 lado=18;
@@ -23,7 +23,7 @@ pressure_angle=20;
 e_rueda_1 = 45*.28;
 e_rueda_2 = 10;
 d_eje_acimutal=50;
-a_eje_acimutal=50;
+a_eje_acimutal=70;
 largo_pie=70;
 alto_base=.28*33;
 base_pilar=.28*41;
@@ -530,14 +530,18 @@ color("teal",0.9)
 color("green",0.8)
   for(a=[0:120:359])
      rotate(a) 
-        translate([largo_pie,0,-105-55*explo])
+        translate([largo_pie,0,
+             -40-alto_base-e_rueda_1-a_eje_acimutal+2
+             -55*explo])
           manija_pie();
 
 //translate([0,20,0])
 if (con_tornillos) {
   for(a=[0:120:359])
     rotate(a) 
-      translate([largo_pie,0,-105-55*explo])
+      translate([largo_pie,0,
+         -40-alto_base-e_rueda_1-a_eje_acimutal+2
+         -55*explo])
         metric_bolt(headtype="round", 
                     size=6, l=35,  
                     details=false, 
@@ -545,7 +549,7 @@ if (con_tornillos) {
                     orient=ORIENT_ZNEG);
   for(x=[31.25,-31.25]) {      
     translate([x,
-              -37.55-30*explo,
+              -36.65-30*explo,
               -40+base_pilar+explo*10])  
         metric_bolt(headtype="round", 
                     size=3, l=20.3,  
@@ -553,7 +557,7 @@ if (con_tornillos) {
                     pitch=0, phillips="#2",
                     orient=ORIENT_Z);
     translate([x,
-               27+15*explo,
+               26.65+15*explo,
               -40+base_pilar+explo*10])  
         metric_bolt(headtype="round", 
                     size=3, l=20.3,  
