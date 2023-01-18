@@ -67,22 +67,24 @@ module rueda_base() {
 module pie(){
   difference(){  
     union(){
-      cylinder(h=a_eje_acimutal-e_rueda_1+1, 
-               d1=d_eje_acimutal+2*3,
+      cylinder(h=a_eje_acimutal-e_rueda_1, 
+               d1=d_eje_acimutal+2*4,
                d2=d_eje_acimutal+2*12);   
       // pies      
         for(a=[0:120:359])
           rotate(a) {
-            translate([0,-5,0])
-              cube([largo_pie,10,25]);
+            rotate([90,0,0])
+              linear_extrude(10,center=true)
+                polygon([[0,0],[largo_pie,0],
+                        [largo_pie,27],[0,41]]);
             translate([largo_pie,0,0])
-              cylinder(h=25,d=20);
+              cylinder(h=27,d=20);
             }
        // pernitos
        for(a=[0:120:359])
          rotate(a) 
            translate([d_eje_acimutal/2+5+2,0,
-                      a_eje_acimutal-e_rueda_1+1-.02])
+                      a_eje_acimutal-e_rueda_1-.02])
              cylinder(h=12.5-3.5,d1=7.85,d2=8.1);
         }      
     // hueco central
@@ -103,7 +105,7 @@ module pie(){
 module manija_pie(){
   d = 40;
   difference(){
-    cylinder(h=5,d=d);
+    cylinder(h=10,d=d);
     cylinder(h=20,d=6,center=true);
     for(a=[0:30:359])
       rotate(a)
@@ -526,16 +528,15 @@ color("teal",0.9)
   translate([0,0,-40-alto_base-.15-e_rueda_1/2-20*explo])
      rueda_base();
 
-color("teal",0.9)
-  translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1+0.8+0)-35*explo])
+!color("teal",0.9)
+  translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1-.2+0)-35*explo])
      pie();
-
 
 color("green",0.8)
   for(a=[0:120:359])
      rotate(a) 
         translate([largo_pie,0,
-             -40-alto_base-e_rueda_1-a_eje_acimutal+2
+             -40-alto_base-e_rueda_1-a_eje_acimutal-1
              -55*explo])
           manija_pie();
 
@@ -544,10 +545,10 @@ if (con_tornillos) {
   for(a=[0:120:359])
     rotate(a) 
       translate([largo_pie,0,
-         -40-alto_base-e_rueda_1-a_eje_acimutal+2
+         -40-alto_base-e_rueda_1-a_eje_acimutal-1
          -55*explo])
         metric_bolt(headtype="round", 
-                    size=6, l=35,  
+                    size=6, l=44.3,  
                     details=false, 
                     pitch=0, phillips="#2",
                     orient=ORIENT_ZNEG);
@@ -653,6 +654,7 @@ module rueda_1 () {
   e_rueda_1=e_rueda_1-5*.28;
   radio = outer_radius(mm_per_tooth=mm_per_tooth,
      number_of_teeth = number_of_teeth_ppal);
+  difference(){
   intersection(){
     union(){
       difference(){
@@ -668,7 +670,7 @@ module rueda_1 () {
            pressure_angle=pressure_angle,
            clearance=.55, 
             backlash=backlash+.55,
-                  hole_diameter=d_eje_acimutal+1
+                  hole_diameter=d_eje_acimutal+2
       );
     }  
      union(){      
@@ -677,6 +679,16 @@ module rueda_1 () {
       cylinder(h=5*.28*2,r=radio-.15,center=true);
      }
   }
+        // muesquitas
+    for(a=[0:120:359])
+      rotate(a) 
+        translate([d_eje_acimutal/2+5+2,0,0])
+          cylinder(h=3*e_rueda_1,d=8,center=true);
+  }
 }
 
-//!translate([0,0,1.4]) rueda_1();
+
+//!union(){
+//  translate([0,0,1.4]) rueda_1();
+//# translate([0,0,e_rueda_1/2]) rueda_base();
+//}
