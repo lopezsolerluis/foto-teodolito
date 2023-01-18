@@ -51,7 +51,7 @@ module rueda_base() {
         gear(mm_per_tooth=mm_per_tooth,
              number_of_teeth=number_of_teeth_ppal,
              thickness=e_rueda_1,
-             hole_diameter=d_eje_acimutal+1,
+             hole_diameter=d_eje_acimutal+2,
              pressure_angle=pressure_angle,
 //             clearance=clearance,
              backlash=backlash
@@ -59,8 +59,8 @@ module rueda_base() {
       // muesquitas
     for(a=[0:120:359])
       rotate(a) 
-        translate([(d_eje_acimutal+12)/2+0,0,0])
-          cylinder(h=3*e_rueda_1,d=7,center=true);
+        translate([d_eje_acimutal/2+5+2,0,0])
+          cylinder(h=3*e_rueda_1,d=8,center=true);
       }      
 }
 
@@ -68,8 +68,8 @@ module pie(){
   difference(){  
     union(){
       cylinder(h=a_eje_acimutal-e_rueda_1+1, 
-              d1=d_eje_acimutal+2*3,
-              d2=d_eje_acimutal+2*12);   
+               d1=d_eje_acimutal+2*3,
+               d2=d_eje_acimutal+2*12);   
       // pies      
         for(a=[0:120:359])
           rotate(a) {
@@ -81,11 +81,14 @@ module pie(){
        // pernitos
        for(a=[0:120:359])
          rotate(a) 
-           translate([(d_eje_acimutal+12)/2,0,a_eje_acimutal-e_rueda_1+1+0])
-             cylinder(h=8,d1=6.9,d2=7.1);
+           translate([d_eje_acimutal/2+5+2,0,
+                      a_eje_acimutal-e_rueda_1+1-.02])
+             cylinder(h=12.5-3.5,d1=7.85,d2=8.1);
         }      
     // hueco central
-    cylinder(h=a_eje_acimutal*3, d=d_eje_acimutal, center=true);
+    cylinder(h=a_eje_acimutal*3, 
+             d=d_eje_acimutal+0, // VER HOLGURA
+             center=true);
     // huecos tornillos    
       for(a=[0:120:359])
           rotate(a) {
@@ -522,10 +525,11 @@ translate([0,0,-40-alto_base-.1-10*explo])
 color("teal",0.9)
   translate([0,0,-40-alto_base-.15-e_rueda_1/2-20*explo])
      rueda_base();
-    
-//color("teal",0.9)
-  translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1+0.8)-35*explo])
-   pie();
+
+color("teal",0.9)
+  translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1+0.8+0)-35*explo])
+     pie();
+
 
 color("green",0.8)
   for(a=[0:120:359])
