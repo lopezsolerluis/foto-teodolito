@@ -537,7 +537,7 @@ rotate(90)
        rueda_secundaria();
 
 translate([0,0,-40-alto_base-.1-10*explo])
-  color("navajowhite") base_sup();
+  color("darkorange") base_sup();
 
 color("teal",0.9)
   translate([0,0,-40-alto_base-.15-e_rueda_1/2-20*explo])
