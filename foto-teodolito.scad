@@ -13,7 +13,6 @@ tubo_seccionado=false; // true o false
 reduccion=2; // 2, 3 o 4
 con_tornillos=true;
 
-tolj=.4;
 lado=18;
 mm_per_tooth = 5;
 number_of_teeth_ppal=72;
@@ -65,6 +64,7 @@ module rueda_base() {
 }
 
 module pie(){
+  let(holgura=0)
   difference(){  
     union(){
       cylinder(h=a_eje_acimutal-e_rueda_1, 
@@ -89,7 +89,7 @@ module pie(){
         }      
     // hueco central
     cylinder(h=a_eje_acimutal*3, 
-             d=d_eje_acimutal+0, // VER HOLGURA
+             d=d_eje_acimutal+holgura, // VER HOLGURA
              center=true);
     // huecos tornillos    
       for(a=[0:120:359])
@@ -99,6 +99,14 @@ module pie(){
             translate([largo_pie,0,0])
               cylinder(h=60,d=6,center=true);
             }
+    // "rebajas" hasta que solucione el temita de mi impresora... ;)
+      cylinder(h=2*2,
+               d=d_eje_acimutal+holgura+2*.3,
+               center=true);
+     for(a=[0:120:359])
+          rotate(a) 
+            translate([largo_pie,0,0])       
+              cylinder(h=2*2,d=6+2*.3,center=true);
     }
 }
 
@@ -532,7 +540,7 @@ color("teal",0.9)
   translate([0,0,-40-alto_base-.15-e_rueda_1/2-20*explo])
      rueda_base();
 
-color("teal",0.9)
+!color("teal",0.9)
   translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1-.2+0)-35*explo])
      pie();
 
