@@ -30,6 +30,8 @@ largo_pie_pilar=75;
 d_tor=3.6;
 a_tuer=9;
 h_tuer=2.4;
+holgura_acimutal=0;
+d_torni_g=5.7;
 echo(alto_base, base_pilar);
 
 function radio_rueda(dientes) =
@@ -63,8 +65,7 @@ module rueda_base() {
       }      
 }
 
-module pie(){
-  let(holgura=0)
+module pie(){  
   difference(){  
     union(){
       cylinder(h=a_eje_acimutal-e_rueda_1, 
@@ -89,7 +90,7 @@ module pie(){
         }      
     // hueco central
     cylinder(h=a_eje_acimutal*3, 
-             d=d_eje_acimutal+holgura, // VER HOLGURA
+             d=d_eje_acimutal+holgura_acimutal, // VER HOLGURA
              center=true);
     // huecos tornillos    
       for(a=[0:120:359])
@@ -97,16 +98,18 @@ module pie(){
             translate([largo_pie-15,-1,-1])
               cube([40,1.5,40]);
             translate([largo_pie,0,0])
-              cylinder(h=60,d=6,center=true);
+              cylinder(h=60,d=d_torni_g,
+                       center=true);
             }
     // "rebajas" hasta que solucione el temita de mi impresora... ;)
       cylinder(h=2*2,
-               d=d_eje_acimutal+holgura+2*.3,
+               d=d_eje_acimutal+holgura_acimutal+2*.3,
                center=true);
      for(a=[0:120:359])
           rotate(a) 
             translate([largo_pie,0,0])       
-              cylinder(h=2*2,d=6+2*.3,center=true);
+              cylinder(h=2*2,d=d_torni_g+2*.3,
+                       center=true);
     }
 }
 
@@ -540,7 +543,7 @@ color("teal",0.9)
   translate([0,0,-40-alto_base-.15-e_rueda_1/2-20*explo])
      rueda_base();
 
-!color("teal",0.9)
+color("teal",0.9)
   translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1-.2+0)-35*explo])
      pie();
 
@@ -704,3 +707,24 @@ module rueda_1 () {
 //  translate([0,0,1.4]) rueda_1();
 //# translate([0,0,e_rueda_1/2]) rueda_base();
 //}
+
+module pie_auxiliar_torn(){
+  intersection(){
+    pie();        
+    translate([largo_pie,0,0])
+      cylinder(h=77,d=50,center=true);
+  }
+}
+//pie_auxiliar_torn();
+module pie_auxiliar(){
+  difference(){
+    intersection(){
+      pie();            
+      translate([0,0,45])
+        cylinder(h=177,d=90);      
+    }
+    translate([0,0,45])
+      cylinder(h=2*1.8,d=d_eje_acimutal+holgura_acimutal+2*0.3,center=true);         
+  }
+}
+//pie_auxiliar();
