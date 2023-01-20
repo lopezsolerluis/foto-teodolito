@@ -30,8 +30,8 @@ largo_pie_pilar=75;
 d_tor=3.6;
 a_tuer=9;
 h_tuer=2.4;
-holgura_acimutal=0;
-d_torni_g=5.7;
+holgura_acimutal=0.5;
+d_torni_g=5.3;
 echo(alto_base, base_pilar);
 
 function radio_rueda(dientes) =
@@ -86,11 +86,11 @@ module pie(){
          rotate(a) 
            translate([d_eje_acimutal/2+5+2,0,
                       a_eje_acimutal-e_rueda_1-.02])
-             cylinder(h=12.5-3.5,d1=7.85,d2=8.1);
+             cylinder(h=12.5-3.5,d1=7.6,d2=7.9);
         }      
     // hueco central
     cylinder(h=a_eje_acimutal*3, 
-             d=d_eje_acimutal+holgura_acimutal, // VER HOLGURA
+             d=d_eje_acimutal+holgura_acimutal,
              center=true);
     // huecos tornillos    
       for(a=[0:120:359])
@@ -108,7 +108,7 @@ module pie(){
      for(a=[0:120:359])
           rotate(a) 
             translate([largo_pie,0,0])       
-              cylinder(h=2*2,d=d_torni_g+2*.3,
+              cylinder(h=2*2,d=d_torni_g+2*.4,
                        center=true);
     }
 }
@@ -117,10 +117,11 @@ module manija_pie(){
   d = 50;
   difference(){
     cylinder(h=10,d=d);
-    cylinder(h=30,d=6,center=true);
+    cylinder(h=30,d=d_torni_g,center=true);
+    cylinder(h=2*2,d=d_torni_g+2*.3,center=true);
     // muescas
-    cube([1.5,10,30],center=true);
-    cube([10,1.5,30],center=true);
+    cube([1.5,11,30],center=true);
+    cube([11,1.5,30],center=true);
     // contorno
     for(a=[0:30:359])
       rotate(a)
@@ -715,16 +716,14 @@ module pie_auxiliar_torn(){
       cylinder(h=77,d=50,center=true);
   }
 }
-//pie_auxiliar_torn();
+//!pie_auxiliar_torn();
 module pie_auxiliar(){
   difference(){
-    intersection(){
-      pie();            
-      translate([0,0,45])
-        cylinder(h=177,d=90);      
-    }
-    translate([0,0,45])
+    cylinder(h=25,d=60);       
+    cylinder(h=55,
+      d=d_eje_acimutal+holgura_acimutal,
+    center=true);
       cylinder(h=2*1.8,d=d_eje_acimutal+holgura_acimutal+2*0.3,center=true);         
   }
 }
-//pie_auxiliar();
+//!pie_auxiliar();
