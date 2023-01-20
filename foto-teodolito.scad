@@ -8,7 +8,7 @@ use <BOSL/involute_gears.scad>
 use <BOSL/beziers.scad>
 use <BOSL/metric_screws.scad>
 
-explo=0; // 0 o 2
+explo=2; // 0 o 2
 tubo_seccionado=false; // true o false
 reduccion=2; // 2, 3 o 4
 con_tornillos=true;
@@ -31,7 +31,8 @@ d_tor=3.6;
 a_tuer=9;
 h_tuer=2.4;
 holgura_acimutal=0.5;
-d_torni_g=5.3;
+d_torni_g=6.1;
+torn_lateral=5.3;
 echo(alto_base, base_pilar);
 
 function radio_rueda(dientes) =
@@ -95,11 +96,21 @@ module pie(){
     // huecos tornillos    
       for(a=[0:120:359])
           rotate(a) {
-            translate([largo_pie-15,-1,-1])
-              cube([40,1.5,40]);
+            translate([largo_pie-27,-1,-1])
+              cube([45,1.5,40]);
             translate([largo_pie,0,0])
               cylinder(h=60,d=d_torni_g,
                        center=true);
+            }
+    // tornillos de ajuste lateral
+      for(a=[0:120:359])            
+        rotate(a)
+          translate([largo_pie-16,0,27/2])
+            rotate([90,0,0]){
+              cylinder(h=30,d=torn_lateral,
+                       center=true);
+              translate([0,0,5])
+                cylinder(h=3,d=11,$fn=6,center=true);
             }
     // "rebajas" hasta que solucione el temita de mi impresora... ;)
       cylinder(h=2*2,
@@ -110,7 +121,7 @@ module pie(){
             translate([largo_pie,0,0])       
               cylinder(h=2*2,d=d_torni_g+2*.4,
                        center=true);
-    }
+    }       
 }
 
 module manija_pie(){
@@ -128,6 +139,23 @@ module manija_pie(){
         translate([d/1.8,0,0])
           cylinder(h=30,d=10.5,center=true);
   }
+}
+
+module freno_lateral(){  
+    difference(){      
+      union(){
+        cylinder(h=6,d=13);
+        translate([0,0,6])            
+          cylinder(h=10,d=20);
+      }
+      cylinder(h=60,d=torn_lateral,center=true);
+      cylinder(h=6,d=11,$fn=6,center=true);
+      for(a=[0:30:359])
+        rotate(a)
+          translate([11,0,0])
+            cylinder(h=60,d=4);
+      
+    }
 }
   
 module rueda_secundaria(){  
@@ -547,7 +575,13 @@ color("teal",0.9)
 color("teal",0.9)
   translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1-.2+0)-35*explo])
      pie();
-
+color("red",0.9)
+  translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1-.2+0)-35*explo])
+  for(a=[0,120,240])
+    rotate(a)
+      translate([largo_pie-16,5.1+8*explo,27/2])
+        rotate([-90,0,0])
+          freno_lateral();
 color("green",0.8)
   for(a=[0:120:359])
      rotate(a) 
