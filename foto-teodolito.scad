@@ -8,7 +8,7 @@ use <BOSL/involute_gears.scad>
 use <BOSL/beziers.scad>
 use <BOSL/metric_screws.scad>
 
-explo=2; // 0 o 2
+explo=0; // 0 o 2
 tubo_seccionado=false; // true o false
 reduccion=2; // 2, 3 o 4
 con_tornillos=true;
@@ -602,6 +602,15 @@ if (con_tornillos) {
                     details=false, 
                     pitch=0, phillips="#2",
                     orient=ORIENT_ZNEG);
+  for(a=[0,120,240])
+    rotate(a)
+      translate([largo_pie-16,-4-18*explo,
+          -40-alto_base-e_rueda_1-a_eje_acimutal+25.8-35*explo])
+        metric_bolt(headtype="hex", 
+                    size=5.1, l=22.25,  
+                    details=false, 
+                    pitch=0, phillips="#2",
+                    orient=ORIENT_YNEG);
   for(x=[31.25,-31.25]) {      
     translate([x,
               -36.65-30*explo,
