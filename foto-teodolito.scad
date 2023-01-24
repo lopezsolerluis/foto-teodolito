@@ -171,7 +171,7 @@ module freno_lateral(){
           cylinder(h=10,d=20);
       }
       cylinder(h=60,d=torn_lateral,center=true);
-      cylinder(h=2*4.5,d=10.5,$fn=6,center=true);
+      cylinder(h=2*4.5,d=11,$fn=6,center=true);
       for(a=[0:30:359])
         rotate(a)
           translate([11,0,0])
