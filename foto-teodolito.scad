@@ -128,7 +128,7 @@ module manija_pie(){
   d = 50;
   difference(){
     cylinder(h=10,d=d);
-    cylinder(h=30,d=d_torni_g,center=true);
+    cylinder(h=30,d=d_torni_g-.1,center=true);
     cylinder(h=2*2,d=d_torni_g+2*.3,center=true);
     // muescas
     cube([1.5,11,30],center=true);
@@ -148,7 +148,6 @@ module base_pie(){
     cylinder(h=14,d=14,center=true);
   }
 }
-
 
 module freno_lateral(){  
     difference(){      
@@ -604,7 +603,7 @@ color("sienna",0.9)
         translate([largo_pie,0,
              -40-alto_base-e_rueda_1-a_eje_acimutal-9-2
              -65*explo])
-!          base_pie();
+          base_pie();
 
 //translate([0,20,0])
 if (con_tornillos) {
