@@ -141,6 +141,15 @@ module manija_pie(){
   }
 }
 
+module base_pie(){
+  difference(){
+    cylinder(h=8,d=40);
+    cylinder(h=20,d=8,center=true);
+    cylinder(h=14,d=14,center=true);
+  }
+}
+
+
 module freno_lateral(){  
     difference(){      
       union(){
@@ -153,8 +162,7 @@ module freno_lateral(){
       for(a=[0:30:359])
         rotate(a)
           translate([11,0,0])
-            cylinder(h=60,d=4);
-      
+            cylinder(h=60,d=4);      
     }
 }
   
@@ -577,11 +585,11 @@ color("teal",0.9)
      pie();
 color("red",0.9)
   translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1-.2+0)-35*explo])
-  for(a=[0,120,240])
-    rotate(a)
-      translate([largo_pie-16,5.1+8*explo,27/2])
-        rotate([-90,0,0])
-          freno_lateral();
+    for(a=[0,120,240])
+      rotate(a)
+        translate([largo_pie-16,5.1+8*explo,27/2])
+          rotate([-90,0,0])
+            freno_lateral();
 color("green",0.8)
   for(a=[0:120:359])
      rotate(a) 
@@ -590,15 +598,23 @@ color("green",0.8)
              -55*explo])
           manija_pie();
 
+color("sienna",0.9)
+  for(a=[0:120:359])
+     rotate(a) 
+        translate([largo_pie,0,
+             -40-alto_base-e_rueda_1-a_eje_acimutal-9-2
+             -65*explo])
+!          base_pie();
+
 //translate([0,20,0])
 if (con_tornillos) {
-  for(a=[0:120:359])
+  for(a=[0:120:359]) // pie
     rotate(a) 
       translate([largo_pie,0,
-         -40-alto_base-e_rueda_1-a_eje_acimutal-1
+         -40-alto_base-e_rueda_1-a_eje_acimutal-1-3
          -55*explo])
         metric_bolt(headtype="round", 
-                    size=6.35, l=44.3,  
+                    size=6.35, l=50.8,//44.45,  
                     details=false, 
                     pitch=0, phillips="#2",
                     orient=ORIENT_ZNEG);
@@ -745,12 +761,6 @@ module rueda_1 () {
           cylinder(h=3*e_rueda_1,d=8,center=true);
   }
 }
-
-
-//!union(){
-//  translate([0,0,1.4]) rueda_1();
-//# translate([0,0,e_rueda_1/2]) rueda_base();
-//}
 
 module pie_auxiliar_torn(){
   intersection(){
