@@ -106,7 +106,7 @@ module pie(){
             translate([largo_pie-27,-1,-1])
               cube([45,1.5,40]);
             translate([largo_pie,0,0])
-              cylinder(h=60,d=d_torni_g,
+              cylinder(h=70,d=d_torni_g,
                        center=true);
             }
     // tornillos de ajuste lateral
@@ -119,6 +119,13 @@ module pie(){
               translate([0,0,5])
                 cylinder(h=6,d=9.4,$fn=6);
             }
+    // 'holgura' para entre cómodo el freno lateral
+      for(a=[0:120:359])            
+        rotate(a)
+          translate([largo_pie-16,0,27/2])
+            rotate([-90,0,0])              
+              translate([0,0,5])
+                cylinder(h=6,d=14+2);            
     // "rebajas" hasta que solucione el temita de mi impresora... ;)
       cylinder(h=2*2,
                d=d_eje_acimutal+holgura_acimutal+2*.3,
@@ -126,7 +133,7 @@ module pie(){
      for(a=[0:120:359])
           rotate(a) 
             translate([largo_pie,0,0])       
-              cylinder(h=2*2,d=d_torni_g+2*.4,
+              cylinder(h=2*2,d=d_torni_g+2*.3,
                        center=true);
     }       
 }
@@ -159,12 +166,12 @@ module base_pie(){
 module freno_lateral(){  
     difference(){      
       union(){
-        cylinder(h=6,d=13);
+        cylinder(h=6,r=7);
         translate([0,0,6])            
           cylinder(h=10,d=20);
       }
       cylinder(h=60,d=torn_lateral,center=true);
-      cylinder(h=6,d=11,$fn=6,center=true);
+      cylinder(h=2*4.5,d=10.5,$fn=6,center=true);
       for(a=[0:30:359])
         rotate(a)
           translate([11,0,0])
@@ -586,7 +593,7 @@ color("teal",0.9)
 
 color("teal",0.9)
   translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1-.2+0)-35*explo])
-    ! pie();
+     pie();
 color("red",0.9)
   translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1-.2+0)-35*explo])
     for(a=[0,120,240])
