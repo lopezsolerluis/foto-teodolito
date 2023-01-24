@@ -145,7 +145,7 @@ module base_pie(){
   difference(){
     cylinder(h=8,d=40);
     cylinder(h=20,d=8,center=true);
-    cylinder(h=14,d=14,center=true);
+    cylinder(h=2*(8-6*.28),d=14,center=true);
   }
 }
 
@@ -596,8 +596,7 @@ color("green",0.8)
              -40-alto_base-e_rueda_1-a_eje_acimutal-1
              -55*explo])
           manija_pie();
-
-color("sienna",0.9)
+#color("sienna",0.9)
   for(a=[0:120:359])
      rotate(a) 
         translate([largo_pie,0,
@@ -610,7 +609,7 @@ if (con_tornillos) {
   for(a=[0:120:359]) // pie
     rotate(a) 
       translate([largo_pie,0,
-         -40-alto_base-e_rueda_1-a_eje_acimutal-1-3
+         -40-alto_base-e_rueda_1-a_eje_acimutal-1-4
          -55*explo])
         metric_bolt(headtype="round", 
                     size=6.35, l=50.8,//44.45,  
