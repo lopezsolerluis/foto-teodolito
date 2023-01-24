@@ -576,7 +576,7 @@ rotate(90)
     rotate([0,180,0])
        stepper_28BYJ_48();
 
-color("sienna",0.9)
+color("peru",0.9)
 rotate(90)
   translate([0,
             distancia_ruedas +10*explo,
