@@ -24,6 +24,7 @@ e_rueda_2 = 10;
 d_eje_acimutal=50;
 a_eje_acimutal=70;
 largo_pie=70;
+dist_torn_lateral = largo_pie-12;
 alto_base=.28*33;
 base_pilar=.28*41;
 largo_pie_pilar=75;
@@ -33,7 +34,7 @@ h_tuer=2.4;
 holgura_acimutal=0.5;
 d_torni_g=6.1;
 torn_lateral=5.2;
-echo(alto_base, base_pilar);
+
 
 function radio_rueda(dientes) =
   pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = dientes);
@@ -80,7 +81,7 @@ module pie(){
                 polygon([[0,0],[largo_pie,0],
                         [largo_pie,27],[0,41]]);
             translate([largo_pie,0,0])
-              cylinder(h=27,d=20);
+              cylinder(h=27,d=10+d_torni_g);
             }
        // pernitos
        for(a=[0:120:359])
@@ -91,7 +92,7 @@ module pie(){
        // tornillos de ajuste lateral
       for(a=[0:120:359])            
         rotate(a)
-          translate([largo_pie-16,0,27/2])
+          translate([dist_torn_lateral,0,27/2])
             rotate([90,30,0])      
               translate([0,0,5])      
                 cylinder(h=3,d1=17,d2=10.5,$fn=6);
@@ -103,7 +104,7 @@ module pie(){
     // huecos tornillos    
       for(a=[0:120:359])
           rotate(a) {
-            translate([largo_pie-27,-1,-1])
+            translate([largo_pie-27,-1.5/2,-1])
               cube([45,1.5,40]);
             translate([largo_pie,0,0])
               cylinder(h=70,d=d_torni_g,
@@ -112,17 +113,17 @@ module pie(){
     // tornillos de ajuste lateral
       for(a=[0:120:359])            
         rotate(a)
-          translate([largo_pie-16,0,27/2])
+          translate([dist_torn_lateral,0,27/2])
             rotate([90,30,0]){
               cylinder(h=30,d=torn_lateral,
                        center=true);
               translate([0,0,5])
-                cylinder(h=6,d=9.4,$fn=6);
+                cylinder(h=5,d=9.4,$fn=6);
             }
     // 'holgura' para entre cómodo el freno lateral
       for(a=[0:120:359])            
         rotate(a)
-          translate([largo_pie-16,0,27/2])
+          translate([dist_torn_lateral,0,27/2])
             rotate([-90,0,0])              
               translate([0,0,5])
                 cylinder(h=6,d=14+2);            
@@ -593,12 +594,12 @@ color("teal",0.9)
 
 color("teal",0.9)
   translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1-.2+0)-35*explo])
-     pie();
+!     pie();
 color("red",0.9)
   translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1-.2+0)-35*explo])
     for(a=[0,120,240])
       rotate(a)
-        translate([largo_pie-16,5.1+8*explo,27/2])
+        translate([dist_torn_lateral,5.1+8*explo,27/2])
           rotate([-90,0,0])
             freno_lateral();
 color("green",0.8)
@@ -630,7 +631,7 @@ if (con_tornillos) {
                     orient=ORIENT_ZNEG);
   for(a=[0,120,240])
     rotate(a)
-      translate([largo_pie-16,-5-18*explo,
+      translate([dist_torn_lateral,-5-18*explo,
           -40-alto_base-e_rueda_1-a_eje_acimutal+25.8-35*explo])
         metric_bolt(headtype="hex", 
                     size=5.1, l=22.25,  
