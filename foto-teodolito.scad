@@ -158,7 +158,7 @@ module base_pie(){
     cylinder(h=7,d=40);
     cylinder(h=20,d=8,center=true);
     cylinder(h=2*(7-3*.28),d=14,center=true);
-    cylinder(h=2*5*.28,d=19,center=true);
+    cylinder(h=2*5*.28,d=18.3,center=true);
     for(a=[0:120:359])
       rotate(a)
         translate([14,0,0])
