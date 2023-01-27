@@ -35,7 +35,6 @@ holgura_acimutal=0.5;
 d_torni_g=6.1;
 torn_lateral=5.2;
 
-
 function radio_rueda(dientes) =
   pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = dientes);
   
@@ -46,8 +45,6 @@ distancia_ruedas = radio_rueda_ppal + radio_rueda_secundaria;
 distancia_ruedas_max = radio_rueda_ppal + radio_rueda(number_of_teeth_ppal/2);
 
 radio_ruedas_secundarias = [ for (red=[2,3,4]) radio_rueda(number_of_teeth_ppal/red) ];
-
-echo(number_of_teeth_ppal/reduccion);
 
 module rueda_base() {
     difference(){     
@@ -158,10 +155,23 @@ module manija_pie(){
 
 module base_pie(){
   difference(){
-    cylinder(h=8,d=40);
+    cylinder(h=7,d=40);
     cylinder(h=20,d=8,center=true);
-    cylinder(h=2*(8-6*.28),d=14,center=true);
+    cylinder(h=2*(7-3*.28),d=14,center=true);
+    cylinder(h=2*5*.28,d=19,center=true);
+    for(a=[0:120:359])
+      rotate(a)
+        translate([14,0,0])
+          cylinder(h=2*(7-3*.28),d=3,center=true);
   }
+}
+
+module base_pie_2(){
+  cylinder(h=3*.28,d=40);
+  for(a=[0:120:359])
+    rotate(a)
+      translate([14,0,0])
+        cylinder(h=5,d=3);  
 }
 
 module freno_lateral(){  
@@ -594,7 +604,7 @@ color("teal",0.9)
 
 color("teal",0.9)
   translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1-.2+0)-35*explo])
-!     pie();
+     pie();
 color("red",0.9)
   translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1-.2+0)-35*explo])
     for(a=[0,120,240])
@@ -614,8 +624,11 @@ color("sienna",0.9)
      rotate(a) 
         translate([largo_pie,0,
              -40-alto_base-e_rueda_1-a_eje_acimutal-9-2
-             -65*explo])
+             -65*explo]){
           base_pie();
+          translate([0,0,-3*.28-10*explo])
+               base_pie_2();
+          }
 
 //translate([0,20,0])
 if (con_tornillos) {
