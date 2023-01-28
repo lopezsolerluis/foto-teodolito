@@ -24,7 +24,7 @@ e_rueda_2 = 10;
 d_eje_acimutal=50;
 a_eje_acimutal=70;
 largo_pie=70;
-dist_torn_lateral = largo_pie-12;
+dist_torn_lateral = largo_pie-13;
 alto_base=.28*33;
 base_pilar=.28*41;
 largo_pie_pilar=75;
@@ -78,7 +78,7 @@ module pie(){
                 polygon([[0,0],[largo_pie,0],
                         [largo_pie,27],[0,41]]);
             translate([largo_pie,0,0])
-              cylinder(h=27,d=10+d_torni_g);
+              cylinder(h=27,d=12+d_torni_g);
             }
        // pernitos
        for(a=[0:120:359])
@@ -86,13 +86,13 @@ module pie(){
            translate([d_eje_acimutal/2+5+2,0,
                       a_eje_acimutal-e_rueda_1-.02])
              cylinder(h=12.5-3.5,d1=7.6,d2=7.9);
-       // tornillos de ajuste lateral
+       // bordes de tornillos de ajuste lateral
       for(a=[0:120:359])            
         rotate(a)
           translate([dist_torn_lateral,0,27/2])
             rotate([90,30,0])      
               translate([0,0,5])      
-                cylinder(h=3,d1=17,d2=10.5,$fn=6);
+                cylinder(h=3,d1=15,d2=10.5,$fn=6);
     }
     // hueco central
     cylinder(h=a_eje_acimutal*3, 
@@ -104,7 +104,7 @@ module pie(){
             translate([largo_pie-27,-1.5/2,-1])
               cube([45,1.5,40]);
             translate([largo_pie,0,0])
-              cylinder(h=70,d=d_torni_g,
+              cylinder(h=70,d=d_torni_g-.1,
                        center=true);
             }
     // tornillos de ajuste lateral
@@ -115,7 +115,7 @@ module pie(){
               cylinder(h=30,d=torn_lateral,
                        center=true);
               translate([0,0,5])
-                cylinder(h=5,d=9.4,$fn=6);
+                cylinder(h=5,d=9.35+2*.3,$fn=6);
             }
     // 'holgura' para entre cómodo el freno lateral
       for(a=[0:120:359])            
