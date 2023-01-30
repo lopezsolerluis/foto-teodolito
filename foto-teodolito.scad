@@ -89,7 +89,7 @@ module pie(){
          rotate(a) 
            translate([d_eje_acimutal/2+5+2,0,
                       a_eje_acimutal-e_rueda_1-.02])
-             cylinder(h=12.5-3.5,d1=7.6,d2=7.9);
+             cylinder(h=12.5-3.5,d1=7.5,d2=7.9);
        // bordes de tornillos de ajuste lateral
       for(a=[0:120:359])            
         rotate(a)
