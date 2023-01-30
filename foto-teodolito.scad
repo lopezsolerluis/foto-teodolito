@@ -28,6 +28,7 @@ dist_torn_lateral = largo_pie-13;
 alto_base=.28*33;
 base_pilar=.28*41;
 largo_pie_pilar=75;
+altura_pies_pilar = 30;
 d_tor=3.6;
 a_tuer=9;
 h_tuer=2.4;
@@ -79,9 +80,9 @@ module pie(){
             rotate([90,0,0])
               linear_extrude(10,center=true)
                 polygon([[0,0],[largo_pie,0],
-                        [largo_pie,27],[0,41]]);
+                        [largo_pie,altura_pies_pilar],[0,altura_pies_pilar+14]]);
             translate([largo_pie,0,0])
-              cylinder(h=27,d=12+d_torni_g);
+              cylinder(h=altura_pies_pilar,d=12+d_torni_g);
             }
        // pernitos
        for(a=[0:120:359])
@@ -92,7 +93,7 @@ module pie(){
        // bordes de tornillos de ajuste lateral
       for(a=[0:120:359])            
         rotate(a)
-          translate([dist_torn_lateral,0,27/2])
+          translate([dist_torn_lateral,0,altura_pies_pilar/2])
             rotate([90,30,0])      
               translate([0,0,5])      
                 cylinder(h=3,d1=15,d2=10.5,$fn=6);
@@ -113,7 +114,7 @@ module pie(){
     // tornillos de ajuste lateral
       for(a=[0:120:359])            
         rotate(a)
-          translate([dist_torn_lateral,0,27/2])
+          translate([dist_torn_lateral,0,altura_pies_pilar/2])
             rotate([90,30,0]){
               cylinder(h=30,d=torn_lateral,
                        center=true);
@@ -123,7 +124,7 @@ module pie(){
     // 'holgura' para entre cómodo el freno lateral
       for(a=[0:120:359])            
         rotate(a)
-          translate([dist_torn_lateral,0,27/2])
+          translate([dist_torn_lateral,0,altura_pies_pilar/2])
             rotate([-90,0,0])              
               translate([0,0,5])
                 cylinder(h=6,d=14+2);            
@@ -616,7 +617,7 @@ color("red",0.9)
   translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1-.2+0)-35*explo])
     for(a=[0,120,240])
       rotate(a)
-        translate([dist_torn_lateral,5.1+8*explo,27/2])
+        translate([dist_torn_lateral,5.1+8*explo,altura_pies_pilar/2])
           rotate([-90,0,0])
             freno_lateral();
 color("green",0.8)
@@ -652,7 +653,7 @@ if (con_tornillos) {
   for(a=[0,120,240])
     rotate(a)
       translate([dist_torn_lateral,-5-18*explo,
-          -40-alto_base-e_rueda_1-a_eje_acimutal+25.8-35*explo])
+          -(53+alto_base+a_eje_acimutal-e_rueda_1-.2)+altura_pies_pilar/2-35*explo])
         metric_bolt(headtype="hex", 
                     size=5.1, l=22.25,  
                     details=false, 
