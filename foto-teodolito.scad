@@ -34,6 +34,9 @@ h_tuer=2.4;
 holgura_acimutal=0.5;
 d_torni_g=6.1;
 torn_lateral=5.2;
+w1_pin=2.8;
+w2_pin=3.5;
+h_pin=5;
 
 function radio_rueda(dientes) =
   pitch_radius(mm_per_tooth=mm_per_tooth, number_of_teeth = dientes);
@@ -157,21 +160,25 @@ module base_pie(){
   difference(){
     cylinder(h=7,d=40);
     cylinder(h=20,d=8,center=true);
-    cylinder(h=2*(7-3*.28),d=14,center=true);
-    cylinder(h=2*5*.28,d=18.3,center=true);
-    for(a=[0:120:359])
-      rotate(a)
-        translate([14,0,0])
-          cylinder(h=2*(7-3*.28),d=3,center=true);
+    cylinder(h=2*(7-8*.28),d=14,center=true);
+    rotate_extrude()
+      translate([14,0,0])
+        square([w2_pin,2*(h_pin+1)],center=true);    
   }
 }
 
 module base_pie_2(){
-  cylinder(h=3*.28,d=40);
-  for(a=[0:120:359])
-    rotate(a)
+  base = 8;
+  difference(){
+    cylinder(h=base*.28,d=40-2*.2); // 2.24
+    translate([0,0,base*.28])
+      cylinder(h=2*5*.28,d=18.3,center=true);
+  }
+  translate([0,0,base*.28])
+    rotate_extrude()
       translate([14,0,0])
-        cylinder(h=5,d=3);  
+        polygon([[-w1_pin/2,0],[w1_pin/2,0],
+                 [w2_pin/2,h_pin],[-w2_pin/2,h_pin]]);
 }
 
 module freno_lateral(){  
@@ -626,7 +633,7 @@ color("sienna",0.9)
              -40-alto_base-e_rueda_1-a_eje_acimutal-9-2
              -65*explo]){
           base_pie();
-          translate([0,0,-3*.28-10*explo])
+          translate([0,0,-8*.28-10*explo])
                base_pie_2();
           }
 
