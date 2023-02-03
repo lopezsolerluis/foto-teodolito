@@ -531,7 +531,7 @@ module base_sup(){
 module pasador_interno_acimutal(){
   alfa=60;
   difference(){
-    cylinder(h=10,d=35.7-.4);
+    cylinder(h=10,d=35.7-.2);
     cylinder(h=30,d=4.76-.35,center=true);      
     translate([0,0,7])
       cylinder(h=10,d=10.9,$fn=6);
@@ -641,7 +641,7 @@ translate([0,0,-40-alto_base-.1-10*explo])
   color("darkorange") base_sup();
 translate([0,0,
           -40-alto_base-a_eje_acimutal+5-45*explo])
-    !color("darkorange") pasador_interno_acimutal();
+    color("darkorange") pasador_interno_acimutal();
 
 color("teal",0.9)
   translate([0,0,-40-alto_base-.15-e_rueda_1/2-20*explo])
