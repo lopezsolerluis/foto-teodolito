@@ -528,6 +528,40 @@ module base_sup(){
   }
 }
 
+module pasador_interno_acimutal(){
+  alfa=60;
+  difference(){
+    cylinder(h=10,d=35.7-.4);
+    cylinder(h=30,d=4.76-.35,center=true);      
+    translate([0,0,7])
+      cylinder(h=10,d=10.9,$fn=6);
+    // hueco cables (?)
+    for(a=[0,alfa])
+      rotate(a)
+        translate([11,0,0])
+          cylinder(h=30,d=5,center=true);
+    rotate_extrude(angle=alfa)
+      translate([11,0,0])
+        square([5,30],center=true);
+    // "rebaja"    
+    cylinder(h=2*1.8,d=4.76-.35+2*.3,center=true);
+  }
+}
+
+module reten_eje_acimutal(){
+  difference(){
+    cylinder(h=6,d2=d_eje_acimutal+2*5,
+                 d1=d_eje_acimutal+2*4);
+    cylinder(h=20,d=5.2,center=true);
+    for(s=[-1,1])
+      translate([s*18,0,0])
+        cylinder(h=20,d=11,center=true);        
+    // "rebaja"
+    translate([0,0,6])
+      cylinder(h=2*2,d=5.2+2*.3,center=true);
+  }
+}
+
 rotate([0,-30,0]) {
 translate([0,0,-20.8]){
   color("#111111") 
@@ -605,6 +639,9 @@ rotate(90)
 
 translate([0,0,-40-alto_base-.1-10*explo])
   color("darkorange") base_sup();
+translate([0,0,
+          -40-alto_base-a_eje_acimutal+5-45*explo])
+    !color("darkorange") pasador_interno_acimutal();
 
 color("teal",0.9)
   translate([0,0,-40-alto_base-.15-e_rueda_1/2-20*explo])
@@ -638,6 +675,10 @@ color("sienna",0.9)
                base_pie_2();
           }
 
+color("teal",0.9)
+  translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1-.2+7)-50*explo])
+     reten_eje_acimutal();
+          
 //translate([0,20,0])
 if (con_tornillos) {
   for(a=[0:120:359]) // pie
