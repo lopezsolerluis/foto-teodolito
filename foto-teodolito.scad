@@ -319,6 +319,27 @@ module abrazadera_servo(tuerca){
   }
 }
 
+module pasador_cables(){
+  let(d=4, l=6, h=10){
+    difference(){
+      hull()
+        for (s=[1,-1])
+          translate([s*l/2,0,0])
+            cylinder(h=h,d=d+4);  
+    hull()
+      for (s=[1,-1])
+        translate([s*l/2,0,0])
+          cylinder(h=h*3,d=d,center=true);
+    translate([l,0,0])
+      cube([l,h,h*3],center=true);
+    translate([3.5-0.5,d,0])
+      cube([9,h,h*3],center=true);  
+    }
+    translate([-1.5,d-1,0])
+      cylinder(d=2,h=h);
+  }
+}
+
 module acople_sensor(){
   dia_int=lado-4; 
   difference() {
@@ -603,6 +624,18 @@ color("deepskyblue",.9){
     pilar(true);
   translate([0,26.6+15*explo,0])
     pilar(false);
+  translate([-16,26.6+11.5+15*explo,-37])
+    rotate([0,90,0])
+      pasador_cables();
+  translate([6,26.6+11.5+15*explo,-37])
+    rotate([0,90,0])
+      pasador_cables();
+  translate([-6,-(36.64+11.5+15*explo),-37])    
+     rotate([0,90,180])
+       pasador_cables();
+  translate([16,-(36.64+11.5+15*explo),-37])    
+     rotate([0,90,180])
+       pasador_cables();
 }
 color("blue",.8){
   translate([6.5+7*explo,-69.15-30*explo,-5.3])
