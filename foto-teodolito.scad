@@ -8,7 +8,7 @@ use <BOSL/involute_gears.scad>
 use <BOSL/beziers.scad>
 use <BOSL/metric_screws.scad>
 
-explo=2; // 0 o 2
+explo=0; // 0 o 2
 tubo_seccionado=false; // true o false
 reduccion=2; // 2, 3 o 4
 con_tornillos=true;
@@ -624,16 +624,16 @@ color("deepskyblue",.9){
     pilar(true);
   translate([0,26.6+15*explo,0])
     pilar(false);
-  translate([-16,26.6+11.5+15*explo,-37])
+  translate([-16,26.6+11.5+25*explo,-37])
     rotate([0,90,0])
       pasador_cables();
-  translate([6,26.6+11.5+15*explo,-37])
+  translate([6,26.6+11.5+25*explo,-37])
     rotate([0,90,0])
       pasador_cables();
-  translate([-6,-(36.64+11.5+15*explo),-37])    
+  translate([-6,-(36.64+11.5+50*explo),-37])    
      rotate([0,90,180])
        pasador_cables();
-  translate([16,-(36.64+11.5+15*explo),-37])    
+  translate([16,-(36.64+11.5+50*explo),-37])    
      rotate([0,90,180])
        pasador_cables();
 }
@@ -695,14 +695,14 @@ color("green",0.8)
      rotate(a) 
         translate([largo_pie,0,
              -40-alto_base-e_rueda_1-a_eje_acimutal-1
-             -55*explo])
+             -42*explo])
           manija_pie();
 color("sienna",0.9)
   for(a=[0:120:359])
      rotate(a) 
         translate([largo_pie,0,
              -40-alto_base-e_rueda_1-a_eje_acimutal-9-2
-             -65*explo]){
+             -48*explo]){
           base_pie();
           translate([0,0,-8*.28-10*explo])
                base_pie_2();
@@ -724,10 +724,27 @@ if (con_tornillos) {
                     details=false, 
                     pitch=0, phillips="#2",
                     orient=ORIENT_ZNEG);
+  for(a=[0:120:359]) // arandelas
+    rotate(a) 
+      translate([largo_pie,0,
+         -40-alto_base-e_rueda_1-a_eje_acimutal-1-11
+         -54.5*explo])
+      color("silver")
+        difference(){
+          cylinder(h=1,d=18);
+          cylinder(h=5,d=8,center=true);
+        }
+  translate([0,0,-(53+alto_base+a_eje_acimutal-e_rueda_1-.2+7)-55*explo])
+        metric_bolt(headtype="round", 
+                    size=5.1, l=20,
+                    details=false, 
+                    pitch=0, phillips="#2",
+                    orient=ORIENT_ZNEG);  
   for(a=[0,120,240])
     rotate(a)
       translate([dist_torn_lateral,-5-18*explo,
           -(53+alto_base+a_eje_acimutal-e_rueda_1-.2)+altura_pies_pilar/2-35*explo])
+        rotate([0,30,0])
         metric_bolt(headtype="hex", 
                     size=5.1, l=22.25,  
                     details=false, 
