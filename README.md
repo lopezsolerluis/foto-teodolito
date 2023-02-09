@@ -2,6 +2,10 @@
 
 Un diseño posible para una suerte de fotómetro de montura acimutal.
 
+## Photographs
+
+![Foto-teodolito-real](https://github.com/lopezsolerluis/foto-teodolito/blob/main/foto-teodolito-real.jpg)
+
 ## Im&aacute;genes
 
 ![Foto-teodolito](https://github.com/lopezsolerluis/foto-teodolito/blob/main/foto-teodolito.png)
